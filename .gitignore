@@ -9,7 +9,7 @@
 .history
 .svn/
 migrate_working_dir/
-lib/firebase_options.dart
+
 
 # IntelliJ related
 *.iml
@@ -32,6 +32,7 @@ lib/firebase_options.dart
 .pub-cache/
 .pub/
 /build/
+/lib/firebase_options.dart
 
 # Symbolication related
 app.*.symbols
