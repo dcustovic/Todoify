@@ -31,58 +31,41 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Register')),
-      body: FutureBuilder(
-        future: Firebase.initializeApp(
-            options: DefaultFirebaseOptions.currentPlatform),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              return Column(
-                children: [
-                  TextField(
-                      controller: _email,
-                      autocorrect: false,
-                      enableSuggestions: false,
-                      decoration:
-                          const InputDecoration(hintText: "Enter email")),
-                  TextField(
-                      controller: _password,
-                      obscureText: true,
-                      autocorrect: false,
-                      enableSuggestions: false,
-                      decoration:
-                          const InputDecoration(hintText: "Enter password")),
-                  TextButton(
-                    child: const Text("Register"),
-                    onPressed: () async {
-                      final email = _email.text;
-                      final password = _password.text;
+    return Column(
+      children: [
+        TextField(
+            controller: _email,
+            autocorrect: false,
+            enableSuggestions: false,
+            decoration: const InputDecoration(hintText: "Enter email")),
+        TextField(
+            controller: _password,
+            obscureText: true,
+            autocorrect: false,
+            enableSuggestions: false,
+            decoration: const InputDecoration(hintText: "Enter password")),
+        TextButton(
+          onPressed: () async {
+            final email = _email.text;
+            final password = _password.text;
 
-                      try {
-                        final UserCredential userCredential = await FirebaseAuth
-                            .instance
-                            .createUserWithEmailAndPassword(
-                                email: email, password: password);
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == 'weak-password') {
-                          print("Weak password");
-                        } else if (e.code == 'email-already-in-use') {
-                          print("Email already in use");
-                        } else if (e.code == 'invalid-email') {
-                          print("Invalid email entered");
-                        }
-                      }
-                    },
-                  ),
-                ],
-              );
-            default:
-              return const Text("Loading...");
-          }
-        },
-      ),
+            try {
+              final UserCredential userCredential = await FirebaseAuth.instance
+                  .createUserWithEmailAndPassword(
+                      email: email, password: password);
+            } on FirebaseAuthException catch (e) {
+              if (e.code == 'weak-password') {
+                print("Weak password");
+              } else if (e.code == 'email-already-in-use') {
+                print("Email already in use");
+              } else if (e.code == 'invalid-email') {
+                print("Invalid email entered");
+              }
+            }
+          },
+          child: const Text("Register"),
+        ),
+      ],
     );
   }
 }
