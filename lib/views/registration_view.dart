@@ -19,12 +19,12 @@ class _RegisterViewState extends State<RegisterView> {
     super.initState();
   }
 
-/*   @override
+  @override
   void dispose() {
     _email = TextEditingController();
     _password = TextEditingController();
     super.dispose();
-  } */
+  }
 
   @override
   Widget build(BuildContext context) {
