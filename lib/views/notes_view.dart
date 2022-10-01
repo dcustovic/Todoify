@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as tools show log;
 
 enum MenuAction { logout }
 
@@ -23,11 +22,14 @@ class _NotesViewState extends State<NotesView> {
                 switch (value) {
                   case MenuAction.logout:
                     final wantsToLogout = await showLogoutPopup(context);
+
                     if (wantsToLogout) {
                       await FirebaseAuth.instance.signOut();
                       if (!mounted) return;
-                      Navigator.of(context)
-                          .pushNamedAndRemoveUntil('/login/', (route) => false);
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/login/',
+                        (route) => false,
+                      );
                     }
                     break;
                 }
@@ -66,6 +68,6 @@ Future<bool> showLogoutPopup(BuildContext context) {
         ],
       );
     },
-    // function returns a bool, but showDialog return an optional bool
+    // function returns a bool, but showDialog returns an optional bool
   ).then((value) => value ?? false);
 }

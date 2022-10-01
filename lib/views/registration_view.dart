@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer' as tools show log;
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -21,8 +22,8 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   void dispose() {
-    _email = TextEditingController();
-    _password = TextEditingController();
+    _email.dispose();
+    _password.dispose();
     super.dispose();
   }
 
@@ -52,13 +53,21 @@ class _RegisterViewState extends State<RegisterView> {
                 final UserCredential userCredential =
                     await FirebaseAuth.instance.createUserWithEmailAndPassword(
                         email: email, password: password);
+                tools.log("REGISTRATION:");
+                tools.log(userCredential.toString());
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'weak-password') {
-                  print("Weak password");
+                  tools.log("User not found");
+                  tools.log("Wrong password");
+                  ("Weak password");
                 } else if (e.code == 'email-already-in-use') {
-                  print("Email already in use");
+                  tools.log("User not found");
+                  tools.log("Wrong password");
+                  ("Email already in use");
                 } else if (e.code == 'invalid-email') {
-                  print("Invalid email entered");
+                  tools.log("User not found");
+                  tools.log("Wrong password");
+                  ("Invalid email entered");
                 }
               }
             },
@@ -66,8 +75,10 @@ class _RegisterViewState extends State<RegisterView> {
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context)
-                  .pushNamedAndRemoveUntil('/login/', (route) => false);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                '/login/',
+                (route) => false,
+              );
             },
             child: const Text("Already have an account?"),
           )
