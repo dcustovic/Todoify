@@ -30,7 +30,7 @@ Future<void> showErrorMessage(BuildContext context, String text) {
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: const Text("An error occured"),
+        title: const Text("Error"),
         content: Text(text),
         actions: [
           TextButton(
