@@ -34,11 +34,11 @@ class _EmailVerificationViewState extends State<EmailVerificationView> {
 
               if (!mounted) return;
               Navigator.of(context).pushNamedAndRemoveUntil(
-                registerRoute,
+                loginRoute,
                 (route) => false,
               );
             },
-            child: const Text("Go back to register"),
+            child: const Text("Login"),
           ),
         ],
       ),
