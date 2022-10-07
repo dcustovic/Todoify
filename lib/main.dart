@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_flutter/constants/routes.dart';
+import 'package:notes_flutter/utilities/loading_indicator.dart';
 import 'package:notes_flutter/views/notes_view.dart';
 
 import 'firebase_options.dart';
@@ -32,25 +33,26 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Firebase.initializeApp(
-            options: DefaultFirebaseOptions.currentPlatform),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              final user = FirebaseAuth.instance.currentUser;
+      future: Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform),
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.done:
+            final user = FirebaseAuth.instance.currentUser;
 
-              if (user == null) {
-                return const LoginView();
+            if (user == null) {
+              return const LoginView();
+            } else {
+              if (user.emailVerified) {
+                return const NotesView();
               } else {
-                if (user.emailVerified) {
-                  return const NotesView();
-                } else {
-                  return const EmailVerificationView();
-                }
+                return const EmailVerificationView();
               }
-            default:
-              return const CircularProgressIndicator();
-          }
-        });
+            }
+          default:
+            return const CustomLoadingIndicator();
+        }
+      },
+    );
   }
 }
