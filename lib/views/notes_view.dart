@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_flutter/constants/routes.dart';
 
+import '../utilities/show_dialog_messages.dart';
+
 enum MenuAction { logout }
 
 class NotesView extends StatefulWidget {
@@ -22,7 +24,7 @@ class _NotesViewState extends State<NotesView> {
               onSelected: (value) async {
                 switch (value) {
                   case MenuAction.logout:
-                    final wantsToLogout = await showLogoutPopup(context);
+                    final wantsToLogout = await showLogoutMessage(context);
 
                     if (wantsToLogout) {
                       await FirebaseAuth.instance.signOut();
@@ -46,29 +48,4 @@ class _NotesViewState extends State<NotesView> {
         ),
         body: const Text("Welcome to my app"));
   }
-}
-
-Future<bool> showLogoutPopup(BuildContext context) {
-  return showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text("Sign out"),
-        content: const Text("Are you sure you want to sign out?"),
-        actions: [
-          TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-              child: const Text("Cancel")),
-          TextButton(
-              onPressed: () async {
-                Navigator.of(context).pop(true);
-              },
-              child: const Text("Sign out")),
-        ],
-      );
-    },
-    // function returns a bool, but showDialog returns an optional bool
-  ).then((value) => value ?? false);
 }
