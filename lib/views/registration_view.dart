@@ -15,11 +15,14 @@ class RegisterView extends StatefulWidget {
 class _RegisterViewState extends State<RegisterView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
+  late final TextEditingController _confirmPassword;
 
   @override
   void initState() {
     _email = TextEditingController();
     _password = TextEditingController();
+    _confirmPassword = TextEditingController();
+    ;
     super.initState();
   }
 
@@ -27,6 +30,7 @@ class _RegisterViewState extends State<RegisterView> {
   void dispose() {
     _email.dispose();
     _password.dispose();
+    _confirmPassword.dispose();
     super.dispose();
   }
 
@@ -65,6 +69,19 @@ class _RegisterViewState extends State<RegisterView> {
                 ),
               ),
               const SizedBox(
+                height: 10,
+              ),
+              TextField(
+                controller: _confirmPassword,
+                obscureText: true,
+                autocorrect: false,
+                enableSuggestions: false,
+                decoration: const InputDecoration(
+                  hintText: "Confirm password",
+                  contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                ),
+              ),
+              const SizedBox(
                 height: 30,
               ),
               TextButton(
@@ -72,15 +89,27 @@ class _RegisterViewState extends State<RegisterView> {
                   final email = _email.text;
                   final password = _password.text;
 
+                  bool isPasswordConfirmed() {
+                    if (_password.text.trim() == _confirmPassword.text.trim()) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  }
+
                   try {
-                    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                        email: email, password: password);
+                    if (isPasswordConfirmed()) {
+                      await FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
+                              email: email, password: password);
+                      final currentUser = FirebaseAuth.instance.currentUser;
+                      currentUser?.sendEmailVerification();
 
-                    final currentUser = FirebaseAuth.instance.currentUser;
-                    currentUser?.sendEmailVerification();
-
-                    if (!mounted) return;
-                    Navigator.of(context).pushNamed(verifyEmailRoute);
+                      if (!mounted) return;
+                      Navigator.of(context).pushNamed(verifyEmailRoute);
+                    } else {
+                      showErrorMessage(context, 'Password does not match.');
+                    }
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'weak-password') {
                       await showErrorMessage(context, 'Wrong password.');
