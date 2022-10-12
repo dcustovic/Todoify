@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class CustomLoadingIndicator extends StatelessWidget {
   const CustomLoadingIndicator({super.key});
@@ -15,11 +14,12 @@ class CustomLoadingIndicator extends StatelessWidget {
           //mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
-            CircularProgressIndicator(
-              backgroundColor: Color.fromARGB(255, 214, 214, 214),
+            SpinKitFoldingCube(
+              color: Colors.blueGrey,
+              size: 45.0,
             ),
             Padding(
-              padding: EdgeInsets.only(top: 10),
+              padding: EdgeInsets.only(top: 20),
               child: Text('Loading'),
             ),
           ],
