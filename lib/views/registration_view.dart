@@ -151,7 +151,7 @@ class _RegisterViewState extends State<RegisterView> {
                         enableSuggestions: false,
                         decoration: InputDecoration(
                             icon: const Icon(Icons.vpn_key_outlined,
-                                color: Color.fromARGB(255, 139, 139, 139)),
+                                color: Color.fromARGB(255, 255, 255, 255)),
                             focusedBorder: UnderlineInputBorder(
                                 borderSide:
                                     BorderSide(color: Colors.grey.shade100)),
@@ -186,11 +186,13 @@ class _RegisterViewState extends State<RegisterView> {
                             borderRadius: BorderRadius.circular(10),
                             splashColor: const Color.fromARGB(255, 34, 0, 129),
                             onTap: () async {
-                              final email = _email.text;
-                              final password = _password.text;
+                              final email = _email.text.trim();
+                              final password = _password.text.trim();
+                              final confirmPassword =
+                                  _confirmPassword.text.trim();
 
                               bool isPasswordConfirmed() {
-                                if (_password.text == _confirmPassword.text) {
+                                if (password == confirmPassword) {
                                   return true;
                                 } else {
                                   return false;
@@ -210,11 +212,8 @@ class _RegisterViewState extends State<RegisterView> {
                                   Navigator.of(context)
                                       .pushNamed(verifyEmailRoute);
                                 } else {
-                                  if (!mounted) return;
-                                  Navigator.of(context).pushNamedAndRemoveUntil(
-                                    verifyEmailRoute,
-                                    (route) => false,
-                                  );
+                                  showErrorMessage(
+                                      context, 'Password does not match.');
                                 }
                               } on FirebaseAuthException catch (e) {
                                 if (e.code == 'user-not-found') {
