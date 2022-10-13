@@ -72,9 +72,22 @@ class _RegisterViewState extends State<RegisterView> {
                 child: Text(
                   "Register",
                   style: TextStyle(
-                      fontFamily: "Pacifico",
-                      fontSize: 40,
-                      color: Colors.white),
+                    fontFamily: "Pacifico",
+                    fontSize: 40,
+                    color: Colors.white,
+                    shadows: <Shadow>[
+                      Shadow(
+                        offset: Offset(3, 3),
+                        blurRadius: 3.0,
+                        color: Color.fromARGB(197, 0, 0, 0),
+                      ),
+                      Shadow(
+                        offset: Offset(5, 5),
+                        blurRadius: 8.0,
+                        color: Color.fromARGB(124, 98, 0, 255),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -162,6 +175,7 @@ class _RegisterViewState extends State<RegisterView> {
                     ],
                   ),
                 ),
+                const SizedBox(height: 4),
                 Container(
                   margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
                   child: Center(
@@ -184,7 +198,6 @@ class _RegisterViewState extends State<RegisterView> {
                           color: Colors.transparent,
                           child: InkWell(
                             borderRadius: BorderRadius.circular(10),
-                            splashColor: const Color.fromARGB(255, 34, 0, 129),
                             onTap: () async {
                               final email = _email.text.trim();
                               final password = _password.text.trim();
@@ -264,11 +277,13 @@ class _RegisterViewState extends State<RegisterView> {
                           (route) => false,
                         );
                       },
-                      child: const Text("LOGIN",
-                          style: TextStyle(
-                              fontSize: 11,
-                              color: Color.fromARGB(255, 114, 98, 253),
-                              fontWeight: FontWeight.w700)),
+                      child: const Text(
+                        "LOGIN",
+                        style: TextStyle(
+                            fontSize: 11,
+                            color: Color.fromARGB(255, 114, 98, 253),
+                            fontWeight: FontWeight.w700),
+                      ),
                     )
                   ],
                 )

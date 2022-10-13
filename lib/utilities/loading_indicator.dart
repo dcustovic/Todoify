@@ -15,7 +15,7 @@ class CustomLoadingIndicator extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
             SpinKitFoldingCube(
-              color: Colors.blueGrey,
+              color: Color.fromARGB(255, 114, 98, 253),
               size: 45.0,
             ),
             Padding(
