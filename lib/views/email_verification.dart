@@ -85,9 +85,10 @@ class _EmailVerificationViewState extends State<EmailVerificationView> {
                           text:
                               'A verification email has been sent, please check your',
                           style: TextStyle(
-                              fontSize: 14,
-                              color: Color.fromARGB(255, 109, 99, 133),
-                              fontWeight: FontWeight.w500),
+                            fontSize: 14,
+                            color: Color.fromARGB(255, 109, 99, 133),
+                            fontWeight: FontWeight.w500,
+                          ),
                           children: <TextSpan>[
                             TextSpan(
                               text: ' inbox ',

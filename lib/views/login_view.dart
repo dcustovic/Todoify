@@ -215,8 +215,8 @@ class _LoginViewState extends State<LoginView> {
                                   await showErrorMessage(
                                       context, 'Invalid email address.');
                                 } else {
-                                  await showErrorMessage(
-                                      context, 'Error: ${e.code}');
+                                  await showErrorMessage(context,
+                                      'Please provide correct account details.');
                                 }
                               } catch (e) {
                                 await showErrorMessage(context, e.toString());
