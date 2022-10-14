@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_flutter/services/auth/auth_service.dart';
 
 import '../constants/diameters.dart';
 import '../constants/routes.dart';
@@ -94,7 +94,7 @@ class _EmailVerificationViewState extends State<EmailVerificationView> {
                               text: ' inbox ',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 143, 106, 228),
+                                color: Color.fromARGB(255, 114, 98, 253),
                               ),
                             ),
                             TextSpan(
@@ -104,7 +104,7 @@ class _EmailVerificationViewState extends State<EmailVerificationView> {
                               text: ' spam ',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 143, 106, 228),
+                                color: Color.fromARGB(255, 114, 98, 253),
                               ),
                             ),
                             TextSpan(
@@ -151,9 +151,8 @@ class _EmailVerificationViewState extends State<EmailVerificationView> {
                           child: InkWell(
                             borderRadius: BorderRadius.circular(10),
                             onTap: () async {
-                              final currentUser =
-                                  FirebaseAuth.instance.currentUser;
-                              await currentUser?.sendEmailVerification();
+                              await AuthService.firebase()
+                                  .sendEmailVerification();
                             },
                             child: const Center(
                               child: Text(
@@ -174,6 +173,7 @@ class _EmailVerificationViewState extends State<EmailVerificationView> {
                   children: <Widget>[
                     TextButton(
                       onPressed: () {
+                        AuthService.firebase().logOut();
                         Navigator.of(context).pushNamedAndRemoveUntil(
                           loginRoute,
                           (route) => false,

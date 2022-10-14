@@ -43,7 +43,7 @@ Future<bool> showLogoutMessage(BuildContext context) {
                     const Color.fromARGB(255, 114, 98, 253)),
               ),
               child: const Text(
-                "Sign out",
+                "Log out",
                 style: TextStyle(
                   fontSize: 14,
                   color: Color.fromARGB(255, 255, 255, 255),

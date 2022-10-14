@@ -1,11 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as tools show log;
 
 import 'package:notes_flutter/constants/routes.dart';
+import 'package:notes_flutter/services/auth/auth_exceptions.dart';
 import 'package:notes_flutter/utilities/show_dialog_messages.dart';
 
 import '../constants/diameters.dart';
+import '../services/auth/auth_service.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -214,36 +215,32 @@ class _RegisterViewState extends State<RegisterView> {
 
                               try {
                                 if (isPasswordConfirmed()) {
-                                  await FirebaseAuth.instance
-                                      .createUserWithEmailAndPassword(
-                                          email: email, password: password);
-                                  final currentUser =
-                                      FirebaseAuth.instance.currentUser;
-                                  currentUser?.sendEmailVerification();
+                                  await AuthService.firebase().createUser(
+                                    email: email,
+                                    password: password,
+                                  );
+                                  AuthService.firebase()
+                                      .sendEmailVerification();
 
                                   if (!mounted) return;
                                   Navigator.of(context)
                                       .pushNamed(verifyEmailRoute);
                                 } else {
                                   showErrorMessage(
-                                      context, 'Password does not match.');
+                                      context, 'Password(s) do not match.');
                                 }
-                              } on FirebaseAuthException catch (e) {
-                                if (e.code == 'weak-password') {
-                                  await showErrorMessage(
-                                      context, 'Your password is too weak.');
-                                } else if (e.code == 'email-already-in-use') {
-                                  await showErrorMessage(
-                                      context, 'Email is already in use.');
-                                } else if (e.code == 'invalid-email') {
-                                  await showErrorMessage(
-                                      context, 'Invalid email address.');
-                                } else {
-                                  await showErrorMessage(context,
-                                      'Please provide correct account details.');
-                                }
-                              } catch (e) {
-                                await showErrorMessage(context, e.toString());
+                              } on WeakPasswordAuthException {
+                                await showErrorMessage(
+                                    context, 'Your password is too weak.');
+                              } on EmailAlreadyInUseAuthException {
+                                await showErrorMessage(
+                                    context, 'Email is already in use.');
+                              } on EmailInvalidAuthException {
+                                await showErrorMessage(
+                                    context, 'Invalid email address.');
+                              } on GenericAuthException {
+                                await showErrorMessage(context,
+                                    'Account registration problem occurred.');
                               }
                             },
                             child: const Center(
