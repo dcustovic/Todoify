@@ -6,6 +6,11 @@ class AuthService implements AuthProvider {
   const AuthService(this.provider);
 
   @override
+  Future<void> initialize() async {
+    provider.initialize();
+  }
+
+  @override
   Future<AuthUser> createUser({
     required String email,
     required String password,

@@ -1,6 +1,8 @@
 import 'package:notes_flutter/services/auth/auth_user.dart';
 
 abstract class AuthProvider {
+  Future<void> initialize();
+
   AuthUser? get currentUser;
 
   Future<AuthUser> createUser({
