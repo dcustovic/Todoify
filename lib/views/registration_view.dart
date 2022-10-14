@@ -229,12 +229,12 @@ class _RegisterViewState extends State<RegisterView> {
                                       context, 'Password does not match.');
                                 }
                               } on FirebaseAuthException catch (e) {
-                                if (e.code == 'user-not-found') {
+                                if (e.code == 'weak-password') {
                                   await showErrorMessage(
-                                      context, 'User not found.');
-                                } else if (e.code == 'wrong-password') {
+                                      context, 'Your password is too weak.');
+                                } else if (e.code == 'email-already-in-use') {
                                   await showErrorMessage(
-                                      context, "Wrong user credentials.");
+                                      context, 'Email is already in use.');
                                 } else if (e.code == 'invalid-email') {
                                   await showErrorMessage(
                                       context, 'Invalid email address.');

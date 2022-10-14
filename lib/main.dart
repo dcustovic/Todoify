@@ -9,7 +9,7 @@ import 'firebase_options.dart';
 
 import 'views/login_view.dart';
 import 'views/registration_view.dart';
-import 'views/email_verification.dart';
+import 'views/email_verification_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
