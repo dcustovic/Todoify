@@ -39,9 +39,24 @@ class _NotesViewState extends State<NotesView> {
                 }
               },
               itemBuilder: (context) {
-                return const [
+                return [
                   PopupMenuItem<MenuAction>(
-                      value: MenuAction.logout, child: Text("Log out")),
+                      value: MenuAction.logout,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.only(
+                              right: 10,
+                            ),
+                            child: Icon(
+                              Icons.logout_rounded,
+                              color: Color.fromARGB(255, 114, 98, 253),
+                            ),
+                          ),
+                          Text('Log out'),
+                        ],
+                      )),
                 ];
               },
             )
