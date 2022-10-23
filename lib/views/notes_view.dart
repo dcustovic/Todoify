@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:notes_flutter/constants/routes.dart';
 import 'package:notes_flutter/services/auth/auth_service.dart';
 
+import '../services/crud/notes_service.dart';
 import '../utilities/show_dialog_messages.dart';
 
 enum MenuAction { logout }
@@ -14,6 +15,21 @@ class NotesView extends StatefulWidget {
 }
 
 class _NotesViewState extends State<NotesView> {
+  late final NotesServiceDb _notesService;
+
+  @override
+  void initState() {
+    _notesService = NotesServiceDb();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _notesService.close();
+    super.dispose();
+  }
+
+  String get userEmail => AuthService.firebase().currentUser!.email!;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

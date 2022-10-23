@@ -29,10 +29,11 @@ const createNoteTable = '''CREATE TABLE "note" (
         FOREIGN KEY("user_id") REFERENCES "user"("id")
       );''';
 
-class NotesService {
+class NotesServiceDb {
   Database? _db;
 
   List<DatabaseNote> _notes = [];
+
   final _notesStreamController =
       StreamController<List<DatabaseNote>>.broadcast();
 
@@ -70,18 +71,19 @@ class NotesService {
     required DatabaseNote note,
     required String text,
   }) async {
+    await ensureDatabaseIsOpen();
     final db = _getDatabaseOrThrow();
 
     // ensuring note exists
     await getNote(id: note.id);
 
     // updating db
-    final updatesCount = await db.update(noteTable, {
+    final updatedCount = await db.update(noteTable, {
       textColumn: text,
       isSyncedWithCloudColumn: 0,
     });
 
-    if (updatesCount == 0) {
+    if (updatedCount == 0) {
       throw CouldNotUpdateNote();
     } else {
       final updateNote = await getNote(id: note.id);
@@ -93,6 +95,7 @@ class NotesService {
   }
 
   Future<Iterable<DatabaseNote>> getAllNotes() async {
+    await ensureDatabaseIsOpen();
     final db = _getDatabaseOrThrow();
     final notes = await db.query(noteTable);
 
@@ -100,6 +103,7 @@ class NotesService {
   }
 
   Future<DatabaseNote> getNote({required int id}) async {
+    await ensureDatabaseIsOpen();
     final db = _getDatabaseOrThrow();
     final notes = await db.query(
       noteTable,
@@ -120,6 +124,7 @@ class NotesService {
   }
 
   Future<int> deleteAllNotes() async {
+    await ensureDatabaseIsOpen();
     final db = _getDatabaseOrThrow();
     final numberOfDeletedNotes = await db.delete(noteTable);
     _notes = [];
@@ -128,6 +133,7 @@ class NotesService {
   }
 
   Future<void> deleteNote({required int id}) async {
+    await ensureDatabaseIsOpen();
     final db = _getDatabaseOrThrow();
     final deleteNote = await db.delete(
       noteTable,
@@ -143,6 +149,7 @@ class NotesService {
   }
 
   Future<DatabaseNote> createNote({required DatabaseUser owner}) async {
+    await ensureDatabaseIsOpen();
     final db = _getDatabaseOrThrow();
 
     // ensuring owner exists in the database with the correct id
@@ -173,6 +180,7 @@ class NotesService {
   }
 
   Future<DatabaseUser> getUser({required String email}) async {
+    await ensureDatabaseIsOpen();
     final db = _getDatabaseOrThrow();
 
     final listResults = await db.query(
@@ -190,6 +198,7 @@ class NotesService {
   }
 
   Future<DatabaseUser> createUser({required String email}) async {
+    await ensureDatabaseIsOpen();
     final db = _getDatabaseOrThrow();
     final listResults = await db.query(
       userTable,
@@ -210,6 +219,7 @@ class NotesService {
   }
 
   Future<void> deleteUser({required String email}) async {
+    await ensureDatabaseIsOpen();
     final db = _getDatabaseOrThrow();
     final deleteCount = await db.delete(
       userTable,
@@ -229,6 +239,14 @@ class NotesService {
     } else {
       await db.close();
       _db = null;
+    }
+  }
+
+  Future<void> ensureDatabaseIsOpen() async {
+    try {
+      await open();
+    } on DatabaseAlreadyOpenException {
+      //
     }
   }
 
