@@ -14,9 +14,9 @@ class CustomLoadingIndicator extends StatelessWidget {
           //mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
-            SpinKitChasingDots(
-              color: Color.fromARGB(255, 114, 98, 253),
-              size: 50.0,
+            SpinKitCircle(
+              color: Color.fromARGB(255, 157, 147, 255),
+              size: 45.0,
             ),
             Padding(
               padding: EdgeInsets.only(top: 20),
@@ -26,6 +26,5 @@ class CustomLoadingIndicator extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

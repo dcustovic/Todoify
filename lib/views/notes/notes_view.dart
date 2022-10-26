@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:notes_flutter/constants/routes.dart';
 import 'package:notes_flutter/services/auth/auth_service.dart';
 
-import '../services/crud/notes_service.dart';
-import '../utilities/loading_indicator.dart';
-import '../utilities/show_dialog_messages.dart';
+import '../../services/crud/notes_service.dart';
+import '../../utilities/loading_indicator.dart';
+import '../../utilities/show_dialog_messages.dart';
 
 enum MenuAction { logout }
 
@@ -36,6 +36,7 @@ class _NotesViewState extends State<NotesView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Notes"),
+        backgroundColor: const Color.fromARGB(255, 95, 81, 223),
         actions: [
           PopupMenuButton<MenuAction>(
             onSelected: (value) async {
@@ -68,7 +69,7 @@ class _NotesViewState extends State<NotesView> {
                           ),
                           child: Icon(
                             Icons.logout_rounded,
-                            color: Color.fromARGB(255, 114, 98, 253),
+                            color: Color.fromARGB(255, 95, 81, 223),
                           ),
                         ),
                         Text('Log out'),
@@ -101,6 +102,16 @@ class _NotesViewState extends State<NotesView> {
               return const CustomLoadingIndicator();
           }
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pushReplacementNamed(addNoteRoute);
+        },
+        backgroundColor: const Color.fromARGB(255, 95, 81, 223),
+        child: const Icon(
+          Icons.add,
+          size: 28,
+        ),
       ),
     );
   }
