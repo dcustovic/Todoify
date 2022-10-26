@@ -34,10 +34,12 @@ class _NotesViewState extends State<NotesView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 95, 81, 223),
       appBar: AppBar(
         title: const Text("Notes"),
         backgroundColor: const Color.fromARGB(255, 95, 81, 223),
-        actions: [
+        elevation: 0,
+        /*  actions: [
           PopupMenuButton<MenuAction>(
             onSelected: (value) async {
               switch (value) {
@@ -78,7 +80,7 @@ class _NotesViewState extends State<NotesView> {
               ];
             },
           )
-        ],
+        ], */
       ),
       body: FutureBuilder(
         future: _notesService.getOrCreateUser(email: userEmail),
@@ -90,8 +92,12 @@ class _NotesViewState extends State<NotesView> {
                 builder: ((context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
-                      return const Text("waiting for notes...");
-
+                      return const Text(
+                        "loading notes...",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      );
                     default:
                       return const CustomLoadingIndicator();
                   }
@@ -102,16 +108,6 @@ class _NotesViewState extends State<NotesView> {
               return const CustomLoadingIndicator();
           }
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pushReplacementNamed(addNoteRoute);
-        },
-        backgroundColor: const Color.fromARGB(255, 95, 81, 223),
-        child: const Icon(
-          Icons.add,
-          size: 28,
-        ),
       ),
     );
   }
