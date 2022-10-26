@@ -20,7 +20,7 @@ const createUserTable = '''CREATE TABLE IF NOT EXISTS "user" (
         "email"	TEXT NOT NULL UNIQUE,
         PRIMARY KEY("id" AUTOINCREMENT)
       );''';
-const createNoteTable = '''CREATE TABLE "note" (
+const createNoteTable = '''CREATE TABLE IF NOT EXISTS "note" (
         "id"	INTEGER NOT NULL,
         "user_id"	INTEGER NOT NULL,
         "text"	TEXT,
@@ -36,6 +36,13 @@ class NotesServiceDb {
 
   final _notesStreamController =
       StreamController<List<DatabaseNote>>.broadcast();
+
+  Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
+
+  // hacky way of creating a singleton
+  static final NotesServiceDb _shared = NotesServiceDb._sharedInstance();
+  NotesServiceDb._sharedInstance();
+  factory NotesServiceDb() => _shared;
 
   Future<void> _cacheNotes() async {
     final allNotes = await getAllNotes();

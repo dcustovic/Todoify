@@ -10,7 +10,8 @@ import 'views/email_verification_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MaterialApp(
+  runApp(
+    MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
@@ -21,7 +22,9 @@ void main() {
         registerRoute: (context) => const RegisterView(),
         notesRoute: (context) => const NotesView(),
         verifyEmailRoute: (context) => const EmailVerificationView(),
-      }));
+      },
+    ),
+  );
 }
 
 class HomePage extends StatelessWidget {
