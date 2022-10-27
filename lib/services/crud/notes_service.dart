@@ -64,6 +64,7 @@ class NotesServiceDb {
     bool setAsCurrentUser = true,
   }) async {
     try {
+      await ensureDatabaseIsOpen();
       final user = await getUser(email: email);
       return user;
     } on CouldNotFindUser {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../constants/routes.dart';
 import '../services/auth/auth_service.dart';
+import '../services/crud/notes_service.dart';
 import '../utilities/show_dialog_messages.dart';
 
 class ProfileView extends StatefulWidget {
