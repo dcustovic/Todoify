@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:notes_flutter/constants/routes.dart';
+
 import 'package:notes_flutter/services/auth/auth_service.dart';
+import 'package:notes_flutter/views/notes/list_note_view.dart';
 
 import '../../services/crud/notes_service.dart';
 import '../../utilities/loading_indicator.dart';
-import '../../utilities/show_dialog_messages.dart';
 
 enum MenuAction { logout }
 
@@ -89,20 +89,10 @@ class _NotesViewState extends State<NotesView> {
                     case ConnectionState.active:
                       if (snapshot.hasData) {
                         final allNotes = snapshot.data;
-
-                        return ListView.builder(
-                          itemCount: allNotes!.length,
-                          itemBuilder: (context, index) {
-                            final note = allNotes[index];
-                            return ListTile(
-                              title: Text(
-                                note.text,
-                                style: const TextStyle(color: Colors.white),
-                                //maxLines: 1,
-                                //softWrap: true,
-                                //overflow: TextOverflow.ellipsis,
-                              ),
-                            );
+                        return ListNoteView(
+                          notes: allNotes!,
+                          deleteNote: (DatabaseNote note) async {
+                            await _notesServiceDb.deleteNote(id: note.id);
                           },
                         );
                       } else {
