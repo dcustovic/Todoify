@@ -95,6 +95,7 @@ class _AddNoteViewState extends State<AddNoteView> {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
               _note = snapshot.data;
+
               _setupTextListener();
               return TextField(
                 controller: _textController,

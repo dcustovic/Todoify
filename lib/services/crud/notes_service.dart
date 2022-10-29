@@ -34,16 +34,22 @@ class NotesServiceDb {
 
   List<DatabaseNote> _notes = [];
 
-  final _notesStreamController =
-      StreamController<List<DatabaseNote>>.broadcast();
-
-  Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
-
   // hacky way of creating a singleton
   static final NotesServiceDb _shared = NotesServiceDb._sharedInstance();
-  NotesServiceDb._sharedInstance();
+  NotesServiceDb._sharedInstance() {
+    _notesStreamController =
+        StreamController<List<DatabaseNote>>.broadcast(onListen: () {
+      // populating stream with all data notes from before
+      // because if another listener comes in, all previous data will be lost
+      _notesStreamController.sink.add(_notes);
+    });
+  }
   factory NotesServiceDb() => _shared;
 
+  late final StreamController<List<DatabaseNote>> _notesStreamController;
+  Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
+
+  // functions
   Future<void> _cacheNotes() async {
     final allNotes = await getAllNotes();
     _notes = allNotes.toList();
@@ -86,10 +92,15 @@ class NotesServiceDb {
     await getNote(id: note.id);
 
     // updating db
-    final updatedCount = await db.update(noteTable, {
-      textColumn: text,
-      isSyncedWithCloudColumn: 0,
-    });
+    final updatedCount = await db.update(
+      noteTable,
+      {
+        textColumn: text,
+        isSyncedWithCloudColumn: 0,
+      },
+      where: 'id = ?',
+      whereArgs: [note.id],
+    );
 
     if (updatedCount == 0) {
       throw CouldNotUpdateNote();
@@ -107,7 +118,11 @@ class NotesServiceDb {
     final db = _getDatabaseOrThrow();
     final notes = await db.query(noteTable);
 
-    return notes.map((noteRow) => DatabaseNote.fromRow(noteRow));
+    return notes.map(
+      (noteRow) {
+        return DatabaseNote.fromRow(noteRow);
+      },
+    );
   }
 
   Future<DatabaseNote> getNote({required int id}) async {
@@ -170,7 +185,11 @@ class NotesServiceDb {
     const text = '';
     final noteId = await db.insert(
       noteTable,
-      {userIdColumn: owner.id, textColumn: text, isSyncedWithCloudColumn: 1},
+      {
+        userIdColumn: owner.id,
+        textColumn: text,
+        isSyncedWithCloudColumn: 1,
+      },
     );
 
     // create a database note

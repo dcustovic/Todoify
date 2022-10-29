@@ -7,6 +7,7 @@ class CustomLoadingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 95, 81, 223),
       body: Container(
         alignment: Alignment.topCenter,
         margin: const EdgeInsets.only(top: 20),
@@ -15,12 +16,15 @@ class CustomLoadingIndicator extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
             SpinKitCircle(
-              color: Color.fromARGB(255, 157, 147, 255),
+              color: Colors.white,
               size: 45.0,
             ),
             Padding(
               padding: EdgeInsets.only(top: 20),
-              child: Text('Loading'),
+              child: Text(
+                'Loading',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         ),

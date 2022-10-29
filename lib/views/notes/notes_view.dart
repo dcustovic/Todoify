@@ -26,12 +26,6 @@ class _NotesViewState extends State<NotesView> {
   }
 
   @override
-  void dispose() {
-    //_notesServiceDb.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 95, 81, 223),
@@ -92,12 +86,28 @@ class _NotesViewState extends State<NotesView> {
                 builder: ((context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
-                      return const Text(
-                        "loading notes...",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      );
+                    case ConnectionState.active:
+                      if (snapshot.hasData) {
+                        final allNotes = snapshot.data;
+
+                        return ListView.builder(
+                          itemCount: allNotes!.length,
+                          itemBuilder: (context, index) {
+                            final note = allNotes[index];
+                            return ListTile(
+                              title: Text(
+                                note.text,
+                                style: const TextStyle(color: Colors.white),
+                                //maxLines: 1,
+                                //softWrap: true,
+                                //overflow: TextOverflow.ellipsis,
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        return const CustomLoadingIndicator();
+                      }
                     default:
                       return const CustomLoadingIndicator();
                   }
