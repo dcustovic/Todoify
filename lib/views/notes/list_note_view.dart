@@ -35,10 +35,10 @@ class _ListNoteViewState extends State<ListNoteView> {
           child: PhysicalShape(
             color: _isFinished[index]
                 //const Color.fromARGB(108, 28, 0, 66)
-                ? Color.fromARGB(158, 54, 53, 56)
-                : Color.fromARGB(82, 30, 9, 63),
-            elevation: 1.5,
-            shadowColor: const Color.fromARGB(108, 33, 0, 87),
+                ? const Color.fromARGB(152, 39, 39, 39)
+                : const Color.fromARGB(94, 29, 8, 63),
+            elevation: 1,
+            shadowColor: const Color.fromARGB(34, 33, 0, 87),
             clipper: ShapeBorderClipper(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
@@ -57,7 +57,7 @@ class _ListNoteViewState extends State<ListNoteView> {
                 //softWrap: true,
                 //overflow: TextOverflow.ellipsis,
               ),
-              textColor: _isFinished[index] ? Colors.white30 : Colors.white,
+              textColor: _isFinished[index] ? Colors.white38 : Colors.white,
               //tileColor: const Color.fromARGB(255, 234, 211, 255),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
@@ -71,8 +71,8 @@ class _ListNoteViewState extends State<ListNoteView> {
                       widget.onEdit(note);
                     },
                     icon: Icon(
-                      Icons.edit,
-                      color: _isFinished[index] ? Colors.white30 : Colors.white,
+                      Icons.edit_outlined,
+                      color: _isFinished[index] ? Colors.white38 : Colors.white,
                     ),
                   ),
                   IconButton(
@@ -80,8 +80,8 @@ class _ListNoteViewState extends State<ListNoteView> {
                       widget.deleteNote(note);
                     },
                     icon: Icon(
-                      Icons.delete,
-                      color: _isFinished[index] ? Colors.white30 : Colors.white,
+                      Icons.delete_rounded,
+                      color: _isFinished[index] ? Colors.white38 : Colors.white,
                     ),
                   ),
                 ],

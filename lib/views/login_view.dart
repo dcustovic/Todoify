@@ -36,7 +36,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEEEEEE),
+      backgroundColor: const Color.fromARGB(255, 95, 81, 223),
       body: Stack(
         children: <Widget>[
           Positioned(
@@ -48,8 +48,8 @@ class _LoginViewState extends State<LoginView> {
               decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: LinearGradient(colors: [
-                    Color.fromARGB(255, 42, 1, 156),
-                    Color.fromARGB(255, 223, 206, 255)
+                    Color.fromARGB(255, 27, 0, 71),
+                    Color.fromARGB(255, 27, 0, 71),
                   ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
             ),
           ),

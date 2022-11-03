@@ -14,17 +14,37 @@ class HomepageView extends StatefulWidget {
 }
 
 class _HomepageViewState extends State<HomepageView> {
-  int index = 0;
+  final pages = [
+    const NotesView(),
+    const AddNoteView(),
+    const ProfileView(),
+  ];
+  PageController _pageController = PageController(initialPage: 0);
+  int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 95, 81, 223),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (newIndex) {
+          setState(() {
+            _currentIndex = newIndex;
+          });
+        },
+        children: const <Widget>[
+          NotesView(),
+          AddNoteView(),
+          ProfileView(),
+        ],
+      ),
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.transparent,
         color: const Color.fromARGB(255, 252, 245, 255),
         animationDuration: const Duration(milliseconds: 300),
         height: 60,
-        index: index,
+        index: _currentIndex,
         items: const <Widget>[
           Icon(Icons.home, size: 30),
           Icon(Icons.add, size: 30),
@@ -32,12 +52,13 @@ class _HomepageViewState extends State<HomepageView> {
         ],
         onTap: (selectedIndex) {
           setState(() {
-            index = selectedIndex;
+            _pageController.animateToPage(
+              selectedIndex,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.ease,
+            );
           });
         },
-      ),
-      body: Container(
-        child: getSelectedWidget(index: index),
       ),
     );
   }
