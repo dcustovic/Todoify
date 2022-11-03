@@ -35,8 +35,8 @@ class _ListNoteViewState extends State<ListNoteView> {
           child: PhysicalShape(
             color: _isFinished[index]
                 //const Color.fromARGB(108, 28, 0, 66)
-                ? const Color.fromARGB(174, 23, 8, 43)
-                : const Color.fromARGB(108, 55, 30, 90),
+                ? Color.fromARGB(158, 54, 53, 56)
+                : Color.fromARGB(82, 30, 9, 63),
             elevation: 1.5,
             shadowColor: const Color.fromARGB(108, 33, 0, 87),
             clipper: ShapeBorderClipper(
