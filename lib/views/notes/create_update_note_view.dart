@@ -112,7 +112,7 @@ class _AddNoteViewState extends State<AddNoteView> {
               _setupTextListener();
 
               return Padding(
-                padding: const EdgeInsets.only(left: 13, right: 13),
+                padding: const EdgeInsets.only(left: 10, right: 10),
                 child: TextField(
                   controller: _textController,
                   decoration: InputDecoration(

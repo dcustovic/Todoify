@@ -25,7 +25,7 @@ class _ListNoteViewState extends State<ListNoteView> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.only(left: 13, right: 13),
+      padding: const EdgeInsets.only(left: 10, right: 10),
       itemCount: widget.notes.length,
       itemBuilder: (context, index) {
         final note = widget.notes[index];
@@ -45,6 +45,7 @@ class _ListNoteViewState extends State<ListNoteView> {
               ),
             ),
             child: ListTile(
+              contentPadding: const EdgeInsets.only(left: 12, right: 0),
               title: Text(
                 note.text,
                 style: _isFinished[index]
