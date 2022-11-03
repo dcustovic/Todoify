@@ -42,7 +42,7 @@ class _HomepageViewState extends State<HomepageView> {
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.transparent,
         color: const Color.fromARGB(255, 252, 245, 255),
-        animationDuration: const Duration(milliseconds: 300),
+        animationDuration: const Duration(milliseconds: 325),
         height: 60,
         index: _currentIndex,
         items: const <Widget>[
@@ -54,7 +54,7 @@ class _HomepageViewState extends State<HomepageView> {
           setState(() {
             _pageController.animateToPage(
               selectedIndex,
-              duration: const Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 1),
               curve: Curves.ease,
             );
           });
