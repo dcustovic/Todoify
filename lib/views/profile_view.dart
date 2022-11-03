@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../constants/routes.dart';
 import '../services/auth/auth_service.dart';
-import '../services/crud/notes_service.dart';
 import '../utilities/show_dialog_messages.dart';
 
 class ProfileView extends StatefulWidget {
@@ -13,8 +12,6 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  int index = 0;
-
   String get userEmail => AuthService.firebase().currentUser!.email!;
 
   @override
@@ -23,6 +20,7 @@ class _ProfileViewState extends State<ProfileView> {
         backgroundColor: const Color.fromARGB(255, 95, 81, 223),
         appBar: AppBar(
           title: const Text("Profile"),
+          centerTitle: true,
           backgroundColor: const Color.fromARGB(255, 95, 81, 223),
           elevation: 0,
         ),

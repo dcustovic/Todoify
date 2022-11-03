@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:notes_flutter/services/auth/auth_service.dart';
 import 'package:notes_flutter/views/notes/list_note_view.dart';
 
+import '../../constants/routes.dart';
 import '../../services/crud/notes_service.dart';
 import '../../utilities/loading_indicator.dart';
 
@@ -30,7 +31,8 @@ class _NotesViewState extends State<NotesView> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 95, 81, 223),
       appBar: AppBar(
-        title: const Text("Notes"),
+        title: const Text("Your tasks"),
+        centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 95, 81, 223),
         elevation: 0,
         /*  actions: [
@@ -93,6 +95,11 @@ class _NotesViewState extends State<NotesView> {
                           notes: allNotes!,
                           deleteNote: (DatabaseNote note) async {
                             await _notesServiceDb.deleteNote(id: note.id);
+                          },
+                          onEdit: (DatabaseNote note) {
+                            Navigator.of(context).pushNamed(
+                                createOrUpdateNoteRoute,
+                                arguments: note);
                           },
                         );
                       } else {

@@ -34,7 +34,17 @@ class _AddNoteViewState extends State<AddNoteView> {
     super.dispose();
   }
 
-  Future<DatabaseNote> createNewNote() async {
+  Future<DatabaseNote> createOrGetExistingNote(BuildContext context) async {
+    // editing note through arguments
+    final noteArgs =
+        ModalRoute.of(context)?.settings.arguments as DatabaseNote?;
+
+    if (noteArgs != null) {
+      _note = noteArgs;
+      _textController.text = noteArgs.text;
+      return noteArgs;
+    }
+
     final existingNote = _note;
     if (existingNote != null) {
       return existingNote;
@@ -42,7 +52,9 @@ class _AddNoteViewState extends State<AddNoteView> {
 
     final email = AuthService.firebase().currentUser!.email!;
     final owner = await _notesServiceDb.getUser(email: email);
-    return await _notesServiceDb.createNote(owner: owner);
+    final newNote = await _notesServiceDb.createNote(owner: owner);
+    _note = newNote;
+    return newNote;
   }
 
   void _deleteNoteIfTextIsEmpty() {
@@ -84,25 +96,39 @@ class _AddNoteViewState extends State<AddNoteView> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 95, 81, 223),
       appBar: AppBar(
-        title: const Text("Add New Note"),
+        title: const Text("Create new task"),
+        centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 95, 81, 223),
         automaticallyImplyLeading: false,
         elevation: 0,
       ),
       body: FutureBuilder(
-        future: createNewNote(),
+        future: createOrGetExistingNote(context),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
               _note = snapshot.data;
 
               _setupTextListener();
-              return TextField(
-                controller: _textController,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                decoration:
-                    const InputDecoration(hintText: "What must you do?"),
+
+              return Padding(
+                padding: const EdgeInsets.only(left: 13, right: 13),
+                child: TextField(
+                  controller: _textController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                        width: 0,
+                        style: BorderStyle.none,
+                      ),
+                    ),
+                    filled: true,
+                    hintStyle: const TextStyle(color: Colors.black87),
+                    hintText: 'What must you do?',
+                    fillColor: Colors.white60,
+                  ),
+                ),
               );
             default:
               return const CustomLoadingIndicator();

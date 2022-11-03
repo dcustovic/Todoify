@@ -6,7 +6,7 @@ import 'package:notes_flutter/views/notes/notes_view.dart';
 
 import 'views/homepage_view.dart';
 import 'views/login_view.dart';
-import 'views/notes/add_note_view.dart';
+import 'views/notes/create_update_note_view.dart';
 import 'views/registration_view.dart';
 import 'views/email_verification_view.dart';
 
@@ -25,7 +25,7 @@ void main() {
         registerRoute: (context) => const RegisterView(),
         notesRoute: (context) => const NotesView(),
         verifyEmailRoute: (context) => const EmailVerificationView(),
-        addNoteRoute: (context) => const AddNoteView(),
+        createOrUpdateNoteRoute: (context) => const AddNoteView(),
       },
     ),
   );
