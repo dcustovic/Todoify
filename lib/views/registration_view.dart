@@ -5,8 +5,8 @@ import 'package:notes_flutter/constants/routes.dart';
 import 'package:notes_flutter/services/auth/auth_exceptions.dart';
 import 'package:notes_flutter/utilities/show_dialog_messages.dart';
 
-import '../constants/diameters.dart';
 import '../services/auth/auth_service.dart';
+import '../utilities/wave_clipper.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -40,10 +40,40 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEEEEEE),
+      backgroundColor: const Color.fromARGB(255, 95, 81, 223),
       body: Stack(
         children: <Widget>[
-          Positioned(
+          Opacity(
+            opacity: 0.5,
+            child: ClipPath(
+              clipper: WaveClipper(),
+              child: Container(
+                color: const Color.fromARGB(255, 36, 5, 77),
+                height: 245,
+              ),
+            ),
+          ),
+          ClipPath(
+            //upper clippath with less height
+            clipper: WaveClipper(),
+            child: Container(
+              padding: const EdgeInsets.only(bottom: 50),
+              color: const Color.fromARGB(198, 25, 2, 53),
+              height: 230,
+              alignment: Alignment.centerLeft,
+              child: const Padding(
+                padding: EdgeInsets.only(left: 20),
+                child: Text(
+                  "Register",
+                  style: TextStyle(
+                    fontSize: 33,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          /*  Positioned(
             right: -getSmallDiameter(context) / 3,
             top: -getSmallDiameter(context) / 3,
             child: Container(
@@ -102,16 +132,16 @@ class _RegisterViewState extends State<RegisterView> {
               decoration: const BoxDecoration(
                   shape: BoxShape.circle, color: Color(0xFFF3E9EE)),
             ),
-          ),
+          ), */
           Align(
             alignment: Alignment.bottomCenter,
             child: ListView(
               children: <Widget>[
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: const Color.fromARGB(232, 255, 255, 255),
                     //border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.5),
@@ -185,20 +215,14 @@ class _RegisterViewState extends State<RegisterView> {
                       height: 40,
                       child: Container(
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          gradient: const LinearGradient(
-                              colors: [
-                                Color.fromARGB(255, 114, 98, 253),
-                                Color.fromARGB(255, 114, 98, 253)
-                              ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter),
+                          borderRadius: BorderRadius.circular(15),
+                          color: const Color.fromARGB(153, 34, 8, 68),
                         ),
                         child: Material(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(15),
                           color: Colors.transparent,
                           child: InkWell(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(15),
                             onTap: () async {
                               final email = _email.text.trim();
                               final password = _password.text.trim();
@@ -264,7 +288,7 @@ class _RegisterViewState extends State<RegisterView> {
                       "ALREADY HAVE AN ACCOUNT?",
                       style: TextStyle(
                           fontSize: 11,
-                          color: Color.fromARGB(255, 141, 141, 141),
+                          color: Colors.white70,
                           fontWeight: FontWeight.w500),
                     ),
                     TextButton(
@@ -277,8 +301,8 @@ class _RegisterViewState extends State<RegisterView> {
                       child: const Text(
                         "LOGIN",
                         style: TextStyle(
-                            fontSize: 11,
-                            color: Color.fromARGB(255, 114, 98, 253),
+                            fontSize: 10,
+                            color: Color.fromARGB(255, 231, 217, 253),
                             fontWeight: FontWeight.w700),
                       ),
                     )

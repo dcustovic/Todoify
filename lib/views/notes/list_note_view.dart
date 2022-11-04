@@ -66,15 +66,17 @@ class _ListNoteViewState extends State<ListNoteView> {
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  IconButton(
-                    onPressed: () {
-                      widget.onEdit(note);
-                    },
-                    icon: Icon(
-                      Icons.edit_outlined,
-                      color: _isFinished[index] ? Colors.white38 : Colors.white,
-                    ),
-                  ),
+                  _isFinished[index]
+                      ? Container()
+                      : IconButton(
+                          onPressed: () {
+                            widget.onEdit(note);
+                          },
+                          icon: const Icon(
+                            Icons.edit_outlined,
+                            color: Colors.white,
+                          ),
+                        ),
                   IconButton(
                     onPressed: () {
                       widget.deleteNote(note);
