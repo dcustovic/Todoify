@@ -3,6 +3,7 @@ import 'package:notes_flutter/services/auth/auth_service.dart';
 
 import '../constants/diameters.dart';
 import '../constants/routes.dart';
+import '../utilities/wave_clipper.dart';
 
 class EmailVerificationView extends StatefulWidget {
   const EmailVerificationView({super.key});
@@ -15,21 +16,52 @@ class _EmailVerificationViewState extends State<EmailVerificationView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEEEEEE),
+      backgroundColor: const Color.fromARGB(255, 95, 81, 223),
       body: Stack(
         children: <Widget>[
-          Positioned(
+          Opacity(
+            opacity: 0.5,
+            child: ClipPath(
+              clipper: WaveClipper(),
+              child: Container(
+                color: const Color.fromARGB(255, 36, 5, 77),
+                height: 245,
+              ),
+            ),
+          ),
+          ClipPath(
+            //upper clippath with less height
+            clipper: WaveClipper(),
+            child: Container(
+              padding: const EdgeInsets.only(bottom: 50),
+              color: const Color.fromARGB(198, 25, 2, 53),
+              height: 230,
+              alignment: Alignment.centerLeft,
+              child: const Padding(
+                padding: EdgeInsets.only(left: 20),
+                child: Text(
+                  "Verification",
+                  style: TextStyle(
+                    fontSize: 33,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          /*  Positioned(
             right: -getSmallDiameter(context) / 3,
             top: -getSmallDiameter(context) / 3,
             child: Container(
               width: getSmallDiameter(context),
               height: getSmallDiameter(context),
               decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(colors: [
-                    Color.fromARGB(255, 42, 1, 156),
-                    Color.fromARGB(255, 223, 206, 255)
-                  ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+                shape: BoxShape.circle,
+                gradient: LinearGradient(colors: [
+                  Color.fromARGB(255, 42, 1, 156),
+                  Color.fromARGB(255, 223, 206, 255)
+                ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+              ),
             ),
           ),
           Positioned(
@@ -55,7 +87,7 @@ class _EmailVerificationViewState extends State<EmailVerificationView> {
               decoration: const BoxDecoration(
                   shape: BoxShape.circle, color: Color(0xFFF3E9EE)),
             ),
-          ),
+          ), */
           Align(
             alignment: Alignment.bottomCenter,
             child: ListView(
@@ -64,7 +96,7 @@ class _EmailVerificationViewState extends State<EmailVerificationView> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     //border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.5),
@@ -136,7 +168,7 @@ class _EmailVerificationViewState extends State<EmailVerificationView> {
                       height: 40,
                       child: Container(
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(15),
                           gradient: const LinearGradient(
                               colors: [
                                 Color.fromARGB(255, 114, 98, 253),
@@ -146,17 +178,17 @@ class _EmailVerificationViewState extends State<EmailVerificationView> {
                               end: Alignment.bottomCenter),
                         ),
                         child: Material(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(15),
+                          color: const Color.fromARGB(153, 34, 8, 68),
                           child: InkWell(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(15),
                             onTap: () async {
                               await AuthService.firebase()
                                   .sendEmailVerification();
                             },
                             child: const Center(
                               child: Text(
-                                "Send verification",
+                                "Send again?",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w700),
@@ -179,11 +211,13 @@ class _EmailVerificationViewState extends State<EmailVerificationView> {
                           (route) => false,
                         );
                       },
-                      child: const Text("LOGIN",
-                          style: TextStyle(
-                              fontSize: 13,
-                              color: Color.fromARGB(255, 114, 98, 253),
-                              fontWeight: FontWeight.w600)),
+                      child: const Text(
+                        "LOGIN",
+                        style: TextStyle(
+                            fontSize: 11,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500),
+                      ),
                     )
                   ],
                 )

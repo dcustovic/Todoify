@@ -93,11 +93,16 @@ class _AddNoteViewState extends State<AddNoteView> {
 
   @override
   Widget build(BuildContext context) {
+    final noteArgs =
+        ModalRoute.of(context)?.settings.arguments as DatabaseNote?;
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 95, 81, 223),
       appBar: AppBar(
-        title: const Text("Create new task"),
-        centerTitle: true,
+        title: noteArgs != null
+            ? const Text("Edit Task")
+            : const Text("Create a New Task"),
+        titleSpacing: 20,
         backgroundColor: const Color.fromARGB(255, 95, 81, 223),
         automaticallyImplyLeading: false,
         elevation: 0,
@@ -112,24 +117,38 @@ class _AddNoteViewState extends State<AddNoteView> {
               _setupTextListener();
 
               return Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: TextField(
-                  controller: _textController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide: const BorderSide(
-                        width: 0,
-                        style: BorderStyle.none,
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                child: PhysicalShape(
+                    color: const Color.fromARGB(94, 29, 8, 63),
+                    elevation: 1,
+                    shadowColor: const Color.fromARGB(34, 33, 0, 87),
+                    clipper: ShapeBorderClipper(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    filled: true,
-                    hintStyle: const TextStyle(color: Colors.black87),
-                    hintText: 'What must you do?',
-                    fillColor: Colors.white60,
-                  ),
-                ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      child: TextField(
+                        style: const TextStyle(color: Colors.white),
+                        controller: _textController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: const BorderSide(
+                              width: 0,
+                              style: BorderStyle.none,
+                            ),
+                          ),
+                          filled: true,
+                          hintStyle: const TextStyle(color: Colors.white70),
+                          hintText: 'What must you do?',
+                          //fillColor: Colors.white60,
+                        ),
+                      ),
+                    )),
               );
+
             default:
               return const CustomLoadingIndicator();
           }

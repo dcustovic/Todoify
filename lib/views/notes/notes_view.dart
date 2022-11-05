@@ -31,8 +31,8 @@ class _NotesViewState extends State<NotesView> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 95, 81, 223),
       appBar: AppBar(
-        title: const Text("Your tasks"),
-        centerTitle: true,
+        title: const Text("Your Tasks"),
+        titleSpacing: 20,
         backgroundColor: const Color.fromARGB(255, 95, 81, 223),
         elevation: 0,
         /*  actions: [

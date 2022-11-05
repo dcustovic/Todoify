@@ -20,7 +20,7 @@ class _ProfileViewState extends State<ProfileView> {
         backgroundColor: const Color.fromARGB(255, 95, 81, 223),
         appBar: AppBar(
           title: const Text("Profile"),
-          centerTitle: true,
+          titleSpacing: 20,
           backgroundColor: const Color.fromARGB(255, 95, 81, 223),
           elevation: 0,
         ),

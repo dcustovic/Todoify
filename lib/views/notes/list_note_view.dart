@@ -25,7 +25,7 @@ class _ListNoteViewState extends State<ListNoteView> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.only(left: 10, right: 10),
+      padding: const EdgeInsets.only(left: 15, right: 15),
       itemCount: widget.notes.length,
       itemBuilder: (context, index) {
         final note = widget.notes[index];
@@ -41,7 +41,7 @@ class _ListNoteViewState extends State<ListNoteView> {
             shadowColor: const Color.fromARGB(34, 33, 0, 87),
             clipper: ShapeBorderClipper(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: BorderRadius.circular(20.0),
               ),
             ),
             child: ListTile(
