@@ -50,7 +50,16 @@ class _ProfileViewState extends State<ProfileView> {
               const SizedBox(height: 40),
               TextButton(
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.white)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        //side: BorderSide(color: Colors.deepOrange),
+                      ),
+                    ),
+                    backgroundColor: MaterialStateProperty.all(
+                      Colors.white,
+                    ),
+                  ),
                   onPressed: () async {
                     final wantsToLogout = await showLogoutMessage(context);
 

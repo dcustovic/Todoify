@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:notes_flutter/services/auth/auth_service.dart';
 import 'package:notes_flutter/services/cloud/cloud_storage_firebase.dart';
+import 'package:notes_flutter/views/notes/list_note_empty.dart';
 import 'package:notes_flutter/views/notes/list_note_view.dart';
 
 import '../../constants/routes.dart';
@@ -33,7 +34,7 @@ class _NotesViewState extends State<NotesView> {
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 95, 81, 223),
         appBar: AppBar(
-          title: const Text("Your Tasks"),
+          title: const Text("Tasks"),
           titleSpacing: 20,
           backgroundColor: const Color.fromARGB(255, 95, 81, 223),
           elevation: 0,
@@ -88,8 +89,11 @@ class _NotesViewState extends State<NotesView> {
               case ConnectionState.active:
                 if (snapshot.hasData) {
                   final allNotes = snapshot.data;
+                  if (allNotes!.isEmpty) {
+                    return ListNoteEmpty();
+                  }
                   return ListNoteView(
-                    notes: allNotes!,
+                    notes: allNotes,
                     deleteNote: (CloudNote note) async {
                       await _notesService.deleteNote(
                           documentId: note.documentId);
