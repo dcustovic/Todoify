@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:notes_flutter/services/auth/auth_service.dart';
+import 'package:notes_flutter/services/cloud/cloud_storage_firebase.dart';
 import 'package:notes_flutter/views/notes/list_note_view.dart';
 
 import '../../constants/routes.dart';
+import '../../services/cloud/cloud_note.dart';
 import '../../services/crud/notes_service.dart';
 import '../../utilities/loading_indicator.dart';
 
@@ -17,25 +19,25 @@ class NotesView extends StatefulWidget {
 }
 
 class _NotesViewState extends State<NotesView> {
-  String get userEmail => AuthService.firebase().currentUser!.email;
-  late final NotesServiceDb _notesServiceDb;
+  String get userId => AuthService.firebase().currentUser!.id;
+  late final CloudStorageFirebase _notesService;
 
   @override
   void initState() {
-    _notesServiceDb = NotesServiceDb();
+    _notesService = CloudStorageFirebase();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 95, 81, 223),
-      appBar: AppBar(
-        title: const Text("Your Tasks"),
-        titleSpacing: 20,
         backgroundColor: const Color.fromARGB(255, 95, 81, 223),
-        elevation: 0,
-        /*  actions: [
+        appBar: AppBar(
+          title: const Text("Your Tasks"),
+          titleSpacing: 20,
+          backgroundColor: const Color.fromARGB(255, 95, 81, 223),
+          elevation: 0,
+          /*  actions: [
           PopupMenuButton<MenuAction>(
             onSelected: (value) async {
               switch (value) {
@@ -77,45 +79,33 @@ class _NotesViewState extends State<NotesView> {
             },
           )
         ], */
-      ),
-      body: FutureBuilder(
-        future: _notesServiceDb.getOrCreateUser(email: userEmail),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              return StreamBuilder(
-                stream: _notesServiceDb.allNotes,
-                builder: ((context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                    case ConnectionState.active:
-                      if (snapshot.hasData) {
-                        final allNotes = snapshot.data;
-                        return ListNoteView(
-                          notes: allNotes!,
-                          deleteNote: (DatabaseNote note) async {
-                            await _notesServiceDb.deleteNote(id: note.id);
-                          },
-                          onEdit: (DatabaseNote note) {
-                            Navigator.of(context).pushNamed(
-                                createOrUpdateNoteRoute,
-                                arguments: note);
-                          },
-                        );
-                      } else {
-                        return const CustomLoadingIndicator();
-                      }
-                    default:
-                      return const CustomLoadingIndicator();
-                  }
-                }),
-              );
-
-            default:
-              return const CustomLoadingIndicator();
-          }
-        },
-      ),
-    );
+        ),
+        body: StreamBuilder(
+          stream: _notesService.allNotes(ownerUserId: userId),
+          builder: ((context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+              case ConnectionState.active:
+                if (snapshot.hasData) {
+                  final allNotes = snapshot.data;
+                  return ListNoteView(
+                    notes: allNotes!,
+                    deleteNote: (CloudNote note) async {
+                      await _notesService.deleteNote(
+                          documentId: note.documentId);
+                    },
+                    onEdit: (CloudNote note) {
+                      Navigator.of(context)
+                          .pushNamed(createOrUpdateNoteRoute, arguments: note);
+                    },
+                  );
+                } else {
+                  return const CustomLoadingIndicator();
+                }
+              default:
+                return const CustomLoadingIndicator();
+            }
+          }),
+        ));
   }
 }

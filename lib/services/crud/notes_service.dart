@@ -1,4 +1,4 @@
-import 'dart:async';
+/* import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:notes_flutter/extentions/list/filter.dart';
@@ -378,3 +378,4 @@ class DatabaseNote {
   @override
   int get hashCode => id.hashCode;
 }
+ */

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../services/crud/notes_service.dart';
+import '../../services/cloud/cloud_note.dart';
 
-typedef NoteCallback = void Function(DatabaseNote note);
+typedef NoteCallback = void Function(CloudNote note);
 
 class ListNoteView extends StatefulWidget {
-  final List<DatabaseNote> notes;
+  final Iterable<CloudNote> notes;
   final NoteCallback deleteNote;
   final NoteCallback onEdit;
 
@@ -28,7 +28,7 @@ class _ListNoteViewState extends State<ListNoteView> {
       padding: const EdgeInsets.only(left: 15, right: 15),
       itemCount: widget.notes.length,
       itemBuilder: (context, index) {
-        final note = widget.notes[index];
+        final note = widget.notes.elementAt(index);
 
         return Padding(
           padding: const EdgeInsets.only(bottom: 12),

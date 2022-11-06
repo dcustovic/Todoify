@@ -4,7 +4,7 @@ import 'package:notes_flutter/services/cloud/cloud_storage_constants.dart';
 import 'package:notes_flutter/services/cloud/cloud_storage_exceptions.dart';
 
 class CloudStorageFirebase {
-  // creating a singleton
+  // creating a singleton - not creating new instances altho it looks like it
   static final CloudStorageFirebase _shared =
       CloudStorageFirebase._sharedInstance();
   CloudStorageFirebase._sharedInstance();
@@ -47,25 +47,21 @@ class CloudStorageFirebase {
           )
           .get()
           .then(
-            (value) => value.docs.map(
-              (doc) => CloudNote(
-                documentId: doc.id,
-                ownerUserId: doc.data()[ownerUserIdFieldName],
-                text: doc.data()[textFieldName],
-              ),
-            ),
+            (value) => value.docs.map((doc) => CloudNote.fromSnapshot(doc)),
           );
     } catch (e) {
       throw CouldNotGetAllNotesException();
     }
   }
 
-  void createNewNote({required ownerId}) async {
-    await notes.add(
+  Future<CloudNote> createNewNote({required ownerId}) async {
+    final document = await notes.add(
       {
         ownerUserIdFieldName: ownerId,
         textFieldName: '',
       },
     );
+    final data = await document.get();
+    return CloudNote(documentId: data.id, ownerUserId: ownerId, text: '');
   }
 }

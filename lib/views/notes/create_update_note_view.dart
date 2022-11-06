@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:notes_flutter/services/auth/auth_service.dart';
+import 'package:notes_flutter/services/cloud/cloud_note.dart';
+import 'package:notes_flutter/services/cloud/cloud_storage_firebase.dart';
 import 'package:notes_flutter/utilities/loading_indicator.dart';
-
-import '../../services/crud/notes_service.dart';
 
 class AddNoteView extends StatefulWidget {
   const AddNoteView({super.key});
@@ -12,13 +12,13 @@ class AddNoteView extends StatefulWidget {
 }
 
 class _AddNoteViewState extends State<AddNoteView> {
-  DatabaseNote? _note;
-  late final NotesServiceDb _notesServiceDb;
+  CloudNote? _note;
+  late final CloudStorageFirebase _notesService;
   late final TextEditingController _textController;
 
   @override
   void initState() {
-    _notesServiceDb = NotesServiceDb();
+    _notesService = CloudStorageFirebase();
     _textController = TextEditingController();
 
     super.initState();
@@ -26,7 +26,7 @@ class _AddNoteViewState extends State<AddNoteView> {
 
   @override
   void dispose() {
-    //_notesServiceDb.close();
+    //_notesService.close();
     _textController.dispose();
     _deleteNoteIfTextIsEmpty();
     _saveNoteWhenTextNotEmpty();
@@ -34,10 +34,9 @@ class _AddNoteViewState extends State<AddNoteView> {
     super.dispose();
   }
 
-  Future<DatabaseNote> createOrGetExistingNote(BuildContext context) async {
+  Future<CloudNote> createOrGetExistingNote(BuildContext context) async {
     // editing note through arguments
-    final noteArgs =
-        ModalRoute.of(context)?.settings.arguments as DatabaseNote?;
+    final noteArgs = ModalRoute.of(context)?.settings.arguments as CloudNote?;
 
     if (noteArgs != null) {
       _note = noteArgs;
@@ -50,9 +49,9 @@ class _AddNoteViewState extends State<AddNoteView> {
       return existingNote;
     }
 
-    final email = AuthService.firebase().currentUser!.email;
-    final owner = await _notesServiceDb.getUser(email: email);
-    final newNote = await _notesServiceDb.createNote(owner: owner);
+    final currentUser = AuthService.firebase().currentUser;
+    final userId = currentUser?.id;
+    final newNote = await _notesService.createNewNote(ownerId: userId);
     _note = newNote;
     return newNote;
   }
@@ -60,19 +59,17 @@ class _AddNoteViewState extends State<AddNoteView> {
   void _deleteNoteIfTextIsEmpty() {
     final note = _note;
     if (_textController.text.isEmpty && note != null) {
-      _notesServiceDb.deleteNote(id: note.id);
+      _notesService.deleteNote(documentId: note.documentId);
     }
   }
 
   void _saveNoteWhenTextNotEmpty() async {
     final note = _note;
-    final text = _textController.text;
+    final currentText = _textController.text;
 
-    if (text.isNotEmpty && note != null) {
-      await _notesServiceDb.updateNote(
-        note: note,
-        text: text,
-      );
+    if (currentText.isNotEmpty && note != null) {
+      await _notesService.updateNote(
+          documentId: note.documentId, text: currentText);
     }
   }
 
@@ -83,7 +80,10 @@ class _AddNoteViewState extends State<AddNoteView> {
     }
 
     final text = _textController.text;
-    await _notesServiceDb.updateNote(note: note, text: text);
+    await _notesService.updateNote(
+      documentId: note.documentId,
+      text: text,
+    );
   }
 
   void _setupTextListener() async {
@@ -93,8 +93,7 @@ class _AddNoteViewState extends State<AddNoteView> {
 
   @override
   Widget build(BuildContext context) {
-    final noteArgs =
-        ModalRoute.of(context)?.settings.arguments as DatabaseNote?;
+    final noteArgs = ModalRoute.of(context)?.settings.arguments as CloudNote?;
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 95, 81, 223),
