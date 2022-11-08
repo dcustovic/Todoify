@@ -19,7 +19,10 @@ class NotesView extends StatefulWidget {
   State<NotesView> createState() => _NotesViewState();
 }
 
-class _NotesViewState extends State<NotesView> {
+class _NotesViewState extends State<NotesView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   String get userId => AuthService.firebase().currentUser!.id;
   late final CloudStorageFirebase _notesService;
 
@@ -31,6 +34,7 @@ class _NotesViewState extends State<NotesView> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 95, 81, 223),
         appBar: AppBar(
@@ -44,10 +48,8 @@ class _NotesViewState extends State<NotesView> {
               switch (value) {
                 case MenuAction.logout:
                   final wantsToLogout = await showLogoutMessage(context);
-
                   if (wantsToLogout) {
                     await AuthService.firebase().logOut();
-
                     if (!mounted) return;
                     Navigator.of(context).pushNamedAndRemoveUntil(
                       loginRoute,

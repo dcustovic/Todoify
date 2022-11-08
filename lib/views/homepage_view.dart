@@ -19,7 +19,7 @@ class _HomepageViewState extends State<HomepageView> {
     const AddNoteView(),
     const ProfileView(),
   ];
-  PageController _pageController = PageController(initialPage: 0);
+  final PageController _pageController = PageController(initialPage: 0);
   int _currentIndex = 0;
 
   @override
@@ -33,11 +33,7 @@ class _HomepageViewState extends State<HomepageView> {
             _currentIndex = newIndex;
           });
         },
-        children: const <Widget>[
-          NotesView(),
-          AddNoteView(),
-          ProfileView(),
-        ],
+        children: pages,
       ),
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.transparent,
@@ -64,7 +60,7 @@ class _HomepageViewState extends State<HomepageView> {
   }
 }
 
-Widget getSelectedWidget({required int index}) {
+/* Widget getSelectedWidget({required int index}) {
   switch (index) {
     case 0:
       return const NotesView();
@@ -75,4 +71,4 @@ Widget getSelectedWidget({required int index}) {
   }
 
   return const CustomLoadingIndicator();
-}
+} */
