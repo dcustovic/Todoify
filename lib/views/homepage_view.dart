@@ -1,7 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
-import '../utilities/loading_indicator.dart';
 import 'notes/create_update_note_view.dart';
 import 'notes/notes_view.dart';
 import 'profile_view.dart';

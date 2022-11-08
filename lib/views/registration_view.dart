@@ -25,7 +25,7 @@ class _RegisterViewState extends State<RegisterView> {
     _email = TextEditingController();
     _password = TextEditingController();
     _confirmPassword = TextEditingController();
-    ;
+
     super.initState();
   }
 

@@ -7,7 +7,7 @@ import 'package:notes_flutter/views/notes/list_note_view.dart';
 
 import '../../constants/routes.dart';
 import '../../services/cloud/cloud_note.dart';
-import '../../services/crud/notes_service.dart';
+
 import '../../utilities/loading_indicator.dart';
 
 enum MenuAction { logout }
@@ -92,7 +92,7 @@ class _NotesViewState extends State<NotesView>
                 if (snapshot.hasData) {
                   final allNotes = snapshot.data;
                   if (allNotes!.isEmpty) {
-                    return ListNoteEmpty();
+                    return const ListNoteEmpty();
                   }
                   return ListNoteView(
                     notes: allNotes,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notes_flutter/services/auth/auth_service.dart';
 
-import '../constants/diameters.dart';
 import '../constants/routes.dart';
 import '../utilities/wave_clipper.dart';
 
