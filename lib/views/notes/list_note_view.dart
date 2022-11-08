@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../services/cloud/cloud_note.dart';
 
 typedef NoteCallback = void Function(CloudNote note);
@@ -66,6 +67,15 @@ class _ListNoteViewState extends State<ListNoteView> {
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
+                  _isFinished[index]
+                      ? Container()
+                      : IconButton(
+                          icon: const Icon(Icons.share, color: Colors.white),
+                          onPressed: () {
+                            final text = note.text;
+                            Share.share('From app: $text');
+                          },
+                        ),
                   _isFinished[index]
                       ? Container()
                       : IconButton(

@@ -3,6 +3,7 @@ import 'package:notes_flutter/services/auth/auth_service.dart';
 import 'package:notes_flutter/services/cloud/cloud_note.dart';
 import 'package:notes_flutter/services/cloud/cloud_storage_firebase.dart';
 import 'package:notes_flutter/utilities/loading_indicator.dart';
+import 'package:share_plus/share_plus.dart';
 
 class AddNoteView extends StatefulWidget {
   const AddNoteView({super.key});
@@ -13,6 +14,7 @@ class AddNoteView extends StatefulWidget {
 
 class _AddNoteViewState extends State<AddNoteView> {
   CloudNote? _note;
+
   late final CloudStorageFirebase _notesService;
   late final TextEditingController _textController;
 
@@ -80,6 +82,7 @@ class _AddNoteViewState extends State<AddNoteView> {
     }
 
     final text = _textController.text;
+
     await _notesService.updateNote(
       documentId: note.documentId,
       text: text,
@@ -101,7 +104,7 @@ class _AddNoteViewState extends State<AddNoteView> {
         title: noteArgs != null
             ? const Text("Edit Task")
             : const Text("Create a New Task"),
-        titleSpacing: 20,
+        titleSpacing: 20.5,
         backgroundColor: const Color.fromARGB(255, 95, 81, 223),
         automaticallyImplyLeading: false,
         elevation: 0,
@@ -118,34 +121,35 @@ class _AddNoteViewState extends State<AddNoteView> {
               return Padding(
                 padding: const EdgeInsets.only(left: 15, right: 15),
                 child: PhysicalShape(
-                    color: const Color.fromARGB(94, 29, 8, 63),
-                    elevation: 1,
-                    shadowColor: const Color.fromARGB(34, 33, 0, 87),
-                    clipper: ShapeBorderClipper(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                  color: const Color.fromARGB(94, 29, 8, 63),
+                  elevation: 1,
+                  shadowColor: const Color.fromARGB(34, 33, 0, 87),
+                  clipper: ShapeBorderClipper(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: TextField(
+                      style: const TextStyle(color: Colors.white),
+                      controller: _textController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                          borderSide: const BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        filled: true,
+                        hintStyle: const TextStyle(color: Colors.white70),
+                        hintText: 'What must you do?',
+                        //fillColor: Colors.white60,
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      child: TextField(
-                        style: const TextStyle(color: Colors.white),
-                        controller: _textController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            borderSide: const BorderSide(
-                              width: 0,
-                              style: BorderStyle.none,
-                            ),
-                          ),
-                          filled: true,
-                          hintStyle: const TextStyle(color: Colors.white70),
-                          hintText: 'What must you do?',
-                          //fillColor: Colors.white60,
-                        ),
-                      ),
-                    )),
+                  ),
+                ),
               );
 
             default:
