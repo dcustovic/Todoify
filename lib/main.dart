@@ -14,10 +14,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
-      ),
+      title: 'Todoify',
       home: const HomePage(),
       routes: {
         homeRoute: (context) => const HomepageView(),

@@ -132,7 +132,11 @@ class _AddNoteViewState extends State<AddNoteView> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: TextField(
-                      style: const TextStyle(color: Colors.white),
+                      keyboardType: TextInputType.text,
+                      maxLines: null,
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
                       controller: _textController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(

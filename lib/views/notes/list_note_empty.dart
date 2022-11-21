@@ -33,7 +33,7 @@ class ListNoteEmpty extends StatelessWidget {
                 ),
               ),
               const Text(
-                "Swipe right to create one",
+                "Swipe left to create one",
                 style: TextStyle(
                   fontSize: 15,
                   color: Color.fromARGB(122, 255, 255, 255),

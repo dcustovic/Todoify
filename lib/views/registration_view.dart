@@ -144,7 +144,8 @@ class _RegisterViewState extends State<RegisterView> {
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
+                        color: const Color.fromARGB(255, 95, 95, 95)
+                            .withOpacity(0.5),
                         spreadRadius: 2,
                         blurRadius: 9,
                         offset:
@@ -160,6 +161,7 @@ class _RegisterViewState extends State<RegisterView> {
                         controller: _email,
                         autocorrect: false,
                         enableSuggestions: false,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           icon: const Icon(
                             Icons.email,
@@ -216,7 +218,7 @@ class _RegisterViewState extends State<RegisterView> {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          color: const Color.fromARGB(153, 34, 8, 68),
+                          color: const Color.fromARGB(164, 27, 6, 54),
                         ),
                         child: Material(
                           borderRadius: BorderRadius.circular(15),
@@ -281,7 +283,7 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                   ),
                 ),
-                Row(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     const Text(
@@ -301,8 +303,9 @@ class _RegisterViewState extends State<RegisterView> {
                       child: const Text(
                         "LOGIN",
                         style: TextStyle(
+                            decoration: TextDecoration.underline,
                             fontSize: 10,
-                            color: Color.fromARGB(255, 231, 217, 253),
+                            color: Color.fromARGB(255, 237, 225, 255),
                             fontWeight: FontWeight.w700),
                       ),
                     )

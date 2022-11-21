@@ -7,12 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1065813004622:android:d49264b56eee5521284e1f",
+        "mobilesdk_app_id": "1:1065813004622:android:5826d5ed9e4bc846284e1f",
         "android_client_info": {
-          "package_name": "com.example.notes_flutter"
+          "package_name": "com.todoify.notes_flutter"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1065813004622-23p3icavoh8kf4cruthj8a3jmiclbu8m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.todoify.notes_flutter",
+            "certificate_hash": "5ee8ab85e37c05c4f0f3f6fb7ee5974f8c62479b"
+          }
+        },
         {
           "client_id": "1065813004622-nc3npsqcnj5i9mhhdoo5ph632autspuu.apps.googleusercontent.com",
           "client_type": 3
@@ -29,6 +37,13 @@
             {
               "client_id": "1065813004622-nc3npsqcnj5i9mhhdoo5ph632autspuu.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1065813004622-7mg0o9hdqsiv52glg3kl7b8lp8vmicdf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.notesFlutter"
+              }
             }
           ]
         }

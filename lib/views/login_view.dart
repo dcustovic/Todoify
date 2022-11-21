@@ -146,7 +146,8 @@ class _LoginViewState extends State<LoginView> {
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
+                        color: const Color.fromARGB(255, 95, 95, 95)
+                            .withOpacity(0.5),
                         spreadRadius: 2,
                         blurRadius: 9,
                         offset:
@@ -162,6 +163,7 @@ class _LoginViewState extends State<LoginView> {
                         controller: _email,
                         autocorrect: false,
                         enableSuggestions: false,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           icon: const Icon(
                             Icons.email,
@@ -264,7 +266,7 @@ class _LoginViewState extends State<LoginView> {
                     ),
                   ),
                 ),
-                Row(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     const Text(
@@ -284,6 +286,7 @@ class _LoginViewState extends State<LoginView> {
                       child: const Text(
                         "REGISTER",
                         style: TextStyle(
+                            decoration: TextDecoration.underline,
                             fontSize: 10,
                             color: Color.fromARGB(255, 231, 217, 253),
                             fontWeight: FontWeight.w700),
