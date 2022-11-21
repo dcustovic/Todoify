@@ -70,15 +70,6 @@ class _ListNoteViewState extends State<ListNoteView> {
                   _isFinished[index]
                       ? Container()
                       : IconButton(
-                          icon: const Icon(Icons.share, color: Colors.white),
-                          onPressed: () {
-                            final text = note.text;
-                            Share.share('From app: $text');
-                          },
-                        ),
-                  _isFinished[index]
-                      ? Container()
-                      : IconButton(
                           onPressed: () {
                             widget.onEdit(note);
                           },

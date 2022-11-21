@@ -5,6 +5,8 @@ import 'package:notes_flutter/services/cloud/cloud_storage_firebase.dart';
 import 'package:notes_flutter/utilities/loading_indicator.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../utilities/show_dialog_messages.dart';
+
 class AddNoteView extends StatefulWidget {
   const AddNoteView({super.key});
 
@@ -20,10 +22,9 @@ class _AddNoteViewState extends State<AddNoteView> {
 
   @override
   void initState() {
+    super.initState();
     _notesService = CloudStorageFirebase();
     _textController = TextEditingController();
-
-    super.initState();
   }
 
   @override
@@ -108,6 +109,22 @@ class _AddNoteViewState extends State<AddNoteView> {
         backgroundColor: const Color.fromARGB(255, 95, 81, 223),
         automaticallyImplyLeading: false,
         elevation: 0,
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.share,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              final text = _textController.text;
+              if (text.isNotEmpty) {
+                Share.share('From app: $text');
+              } else {
+                showCannotShareEmptyNote(context);
+              }
+            },
+          )
+        ],
       ),
       body: FutureBuilder(
         future: createOrGetExistingNote(context),
@@ -132,8 +149,8 @@ class _AddNoteViewState extends State<AddNoteView> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: TextField(
-                      keyboardType: TextInputType.text,
                       maxLines: null,
+                      keyboardType: TextInputType.text,
                       style: const TextStyle(
                         color: Colors.white,
                       ),
@@ -151,6 +168,9 @@ class _AddNoteViewState extends State<AddNoteView> {
                         hintText: 'What must you do?',
                         //fillColor: Colors.white60,
                       ),
+                      onChanged: (value) {
+                        //shareText = value;
+                      },
                     ),
                   ),
                 ),

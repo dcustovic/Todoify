@@ -101,3 +101,48 @@ Future<void> showErrorMessage(BuildContext context, String text) {
     },
   );
 }
+
+Future<void> showCannotShareEmptyNote(BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text(
+          "Warning!",
+          style: TextStyle(
+            fontSize: 22,
+            color: Color.fromARGB(255, 70, 63, 88),
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        content: const Text(
+          "Cannot share empty task.",
+          style: TextStyle(
+            fontSize: 15,
+            color: Color.fromARGB(255, 70, 63, 88),
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(
+                  const Color.fromARGB(255, 114, 98, 253)),
+            ),
+            child: const Text(
+              "OK",
+              style: TextStyle(
+                fontSize: 14,
+                color: Color.fromARGB(255, 255, 255, 255),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
