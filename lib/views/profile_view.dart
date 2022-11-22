@@ -1,4 +1,11 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:notes_flutter/utilities/loading_indicator.dart';
+import 'package:path/path.dart';
 
 import '../constants/routes.dart';
 import '../services/auth/auth_service.dart';
@@ -13,6 +20,63 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   String get userEmail => AuthService.firebase().currentUser!.email;
+  final currentUser = AuthService.firebase().currentUser;
+
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
+
+  File? _photo;
+  String imageUrl = '';
+  final ImagePicker _picker = ImagePicker();
+
+  Future imgFromGallery() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+        uploadFile();
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future imgFromCamera() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+        uploadFile();
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  void imgRemove() {
+    setState(() {
+      _photo = null;
+    });
+  }
+
+  Future uploadFile() async {
+    if (_photo == null) return;
+    final fileName = basename(_photo!.path);
+    const destination = 'images';
+
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance
+          .ref(destination)
+          .child(fileName);
+      await ref.putFile(_photo!);
+
+      await ref.getDownloadURL().then((value) => {imageUrl = value});
+    } catch (e) {
+      print('error occured');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,17 +93,44 @@ class _ProfileViewState extends State<ProfileView> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const SizedBox(
-                height: 90,
+                height: 110,
               ),
-              const CircleAvatar(
-                radius: 70,
-                backgroundColor: Colors.transparent,
-                child: Icon(
-                  Icons.person,
-                  size: 130,
-                  color: Colors.white,
+              Container(
+                decoration:
+                    const BoxDecoration(shape: BoxShape.circle, boxShadow: [
+                  BoxShadow(
+                    color: Color.fromARGB(255, 37, 37, 37),
+                    //spreadRadius: 1,
+                    blurRadius: 5,
+                    // changes position of shadow
+                  ),
+                ]),
+                child: CircleAvatar(
+                  radius: 53,
+                  backgroundColor: Color.fromARGB(255, 231, 231, 231),
+                  child: ClipOval(
+                    child: Image.network(
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
+                      currentUser!.photo!,
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace? stackTrace) {
+                        return const CircleAvatar(
+                          radius: 53,
+                          backgroundColor: Colors.transparent,
+                          child: Icon(
+                            Icons.person,
+                            size: 100,
+                            color: Colors.white,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ),
+              const SizedBox(height: 20),
               Text(
                 userEmail,
                 style: const TextStyle(

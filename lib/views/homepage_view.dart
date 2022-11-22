@@ -18,8 +18,8 @@ class _HomepageViewState extends State<HomepageView> {
     const AddNoteView(),
     const ProfileView(),
   ];
-  final PageController _pageController = PageController(initialPage: 0);
-  int _currentIndex = 0;
+  final PageController _pageController = PageController(initialPage: 2);
+  int _currentIndex = 2;
 
   @override
   Widget build(BuildContext context) {
