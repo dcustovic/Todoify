@@ -6,7 +6,7 @@ class AuthUser {
   final String id;
   final String email;
   final bool isEmailVerified;
-  final String photo;
+  final String? photo;
 
   const AuthUser({
     required this.id,
@@ -19,6 +19,6 @@ class AuthUser {
         id: user.uid,
         email: user.email!,
         isEmailVerified: user.emailVerified,
-        photo: user.photoURL!,
+        photo: user.photoURL,
       );
 }

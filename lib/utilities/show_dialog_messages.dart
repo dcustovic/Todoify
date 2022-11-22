@@ -108,7 +108,7 @@ Future<void> showCannotShareEmptyNote(BuildContext context) {
     builder: (context) {
       return AlertDialog(
         title: const Text(
-          "Warning!",
+          "Warning",
           style: TextStyle(
             fontSize: 22,
             color: Color.fromARGB(255, 70, 63, 88),
@@ -145,4 +145,61 @@ Future<void> showCannotShareEmptyNote(BuildContext context) {
       );
     },
   );
+}
+
+Future<bool> showDeleteDialog(BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text(
+          "Are you sure?",
+          style: TextStyle(
+            fontSize: 22,
+            color: Color.fromARGB(255, 70, 63, 88),
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        content: const Text(
+          "Are you sure you want to delete this task?",
+          style: TextStyle(
+            fontSize: 15,
+            color: Color.fromARGB(255, 70, 63, 88),
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: const Text(
+                "Cancel",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Color.fromARGB(255, 70, 63, 88),
+                  fontWeight: FontWeight.w500,
+                ),
+              )),
+          TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop(true);
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(
+                    const Color.fromARGB(255, 114, 98, 253)),
+              ),
+              child: const Text(
+                "Yes",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  fontWeight: FontWeight.w500,
+                ),
+              )),
+        ],
+      );
+    },
+    // function returns a bool, but showDialog returns an optional bool
+  ).then((value) => value ?? false);
 }

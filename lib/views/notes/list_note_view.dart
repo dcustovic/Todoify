@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../services/cloud/cloud_note.dart';
+import '../../utilities/show_dialog_messages.dart';
 
 typedef NoteCallback = void Function(CloudNote note);
 
@@ -78,8 +79,12 @@ class _ListNoteViewState extends State<ListNoteView> {
                           ),
                         ),
                   IconButton(
-                    onPressed: () {
-                      widget.deleteNote(note);
+                    onPressed: () async {
+                      final wantsToDelete = await showDeleteDialog(context);
+
+                      if (wantsToDelete) {
+                        widget.deleteNote(note);
+                      }
                     },
                     icon: Icon(
                       Icons.delete_rounded,
