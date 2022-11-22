@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../services/cloud/cloud_note.dart';
-import '../../utilities/show_dialog_messages.dart';
+import '../../utilities/show_snackbar.dart';
 
 typedef NoteCallback = void Function(CloudNote note);
+
+enum Actions { edit, share, delete }
 
 class ListNoteView extends StatefulWidget {
   final Iterable<CloudNote> notes;
@@ -39,69 +43,125 @@ class _ListNoteViewState extends State<ListNoteView> {
                 ? const Color.fromARGB(152, 39, 39, 39)
                 : const Color.fromARGB(94, 29, 8, 63),
             elevation: 1,
-            shadowColor: const Color.fromARGB(34, 33, 0, 87),
+            shadowColor: const Color.fromARGB(38, 33, 0, 87),
             clipper: ShapeBorderClipper(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
             ),
-            child: ListTile(
-              contentPadding: const EdgeInsets.only(left: 12, right: 0),
-              title: Text(
-                note.text,
-                style: _isFinished[index]
-                    ? const TextStyle(
-                        decoration: TextDecoration.lineThrough,
-                      )
-                    : null,
-                //maxLines: 1,
-                //softWrap: true,
-                //overflow: TextOverflow.ellipsis,
-              ),
-              textColor: _isFinished[index] ? Colors.white38 : Colors.white,
-              //tileColor: const Color.fromARGB(255, 234, 211, 255),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              dense: true,
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  _isFinished[index]
-                      ? Container()
-                      : IconButton(
-                          onPressed: () {
-                            widget.onEdit(note);
-                          },
-                          icon: const Icon(
-                            Icons.edit_outlined,
-                            color: Colors.white,
-                          ),
-                        ),
-                  IconButton(
-                    onPressed: () async {
-                      final wantsToDelete = await showDeleteDialog(context);
-
-                      if (wantsToDelete) {
-                        widget.deleteNote(note);
-                      }
-                    },
-                    icon: Icon(
-                      Icons.delete_rounded,
-                      color: _isFinished[index] ? Colors.white38 : Colors.white,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20.0),
+              child: SlidableAutoCloseBehavior(
+                child: Slidable(
+                  key: ValueKey(note),
+                  startActionPane: startActionPane(note, widget),
+                  endActionPane: endActionPane(context, note, widget),
+                  child: ListTile(
+                    visualDensity: const VisualDensity(vertical: 0.15),
+                    contentPadding: const EdgeInsets.only(left: 12, right: 12),
+                    title: Text(
+                      note.text,
+                      style: _isFinished[index]
+                          ? const TextStyle(
+                              decoration: TextDecoration.lineThrough,
+                            )
+                          : null,
+                      //maxLines: 1,
+                      //softWrap: true,
+                      //overflow: TextOverflow.ellipsis,
                     ),
+                    textColor:
+                        _isFinished[index] ? Colors.white38 : Colors.white,
+                    //tileColor: const Color.fromARGB(255, 234, 211, 255),
+                    /*   shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ), */
+                    dense: true,
+                    onTap: () {
+                      setState(() {
+                        _isFinished[index] = !_isFinished[index];
+                      });
+                    },
                   ),
-                ],
+                ),
               ),
-              onTap: () {
-                setState(() {
-                  _isFinished[index] = !_isFinished[index];
-                });
-              },
             ),
           ),
         );
       },
     );
   }
+}
+
+ActionPane startActionPane(CloudNote note, ListNoteView widget) {
+  return ActionPane(
+    // A motion is a widget used to control how the pane animates.
+    motion: const StretchMotion(),
+    children: [
+      SlidableAction(
+        onPressed: ((context) {
+          widget.onEdit(note);
+          showSnackBar(
+            context,
+            "You are editing this task.",
+            Colors.orange,
+          );
+        }),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(12),
+          bottomLeft: Radius.circular(12),
+        ),
+        backgroundColor: Colors.orange,
+        foregroundColor: Colors.white,
+        icon: Icons.edit,
+      ),
+      SlidableAction(
+        onPressed: (context) {
+          final text = note.text;
+          Share.share('Todoify app: $text');
+          showSnackBar(
+            context,
+            "Task is being shared...",
+            Colors.blue,
+          );
+        },
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        icon: Icons.share,
+      ),
+    ],
+  );
+}
+
+ActionPane endActionPane(
+    BuildContext context, CloudNote note, ListNoteView widget) {
+  return ActionPane(
+    // A motion is a widget used to control how the pane animates.
+    motion: const ScrollMotion(),
+    dismissible: DismissiblePane(
+      onDismissed: () {
+        widget.deleteNote(note);
+        showSnackBar(
+          context,
+          "Task has been succesfully deleted.",
+          Colors.red,
+        );
+      },
+    ),
+    children: [
+      SlidableAction(
+        key: ValueKey(note),
+        // An action can be bigger than the others.
+        borderRadius: const BorderRadius.only(
+          topRight: Radius.circular(12),
+          bottomRight: Radius.circular(12),
+        ),
+        onPressed: null,
+        backgroundColor: Colors.red,
+        foregroundColor: Colors.white,
+        icon: Icons.delete,
+        //label: 'Swipe all the way',
+      ),
+    ],
+  );
 }

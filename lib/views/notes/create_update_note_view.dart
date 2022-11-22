@@ -109,22 +109,6 @@ class _AddNoteViewState extends State<AddNoteView> {
         backgroundColor: const Color.fromARGB(255, 95, 81, 223),
         automaticallyImplyLeading: false,
         elevation: 0,
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.share,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              final text = _textController.text;
-              if (text.isNotEmpty) {
-                Share.share('From app: $text');
-              } else {
-                showCannotShareEmptyNote(context);
-              }
-            },
-          )
-        ],
       ),
       body: FutureBuilder(
         future: createOrGetExistingNote(context),
