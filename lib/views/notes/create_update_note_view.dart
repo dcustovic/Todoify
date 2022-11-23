@@ -119,7 +119,7 @@ class _AddNoteViewState extends State<AddNoteView> {
               return KeyboardActions(
                 config: KeyboardActionsConfig(
                   keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
-                  keyboardBarColor: Colors.white,
+                  keyboardBarColor: Colors.white70,
                   actions: [
                     KeyboardActionsItem(focusNode: _focusInput),
                   ],
