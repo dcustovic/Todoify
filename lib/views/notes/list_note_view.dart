@@ -73,9 +73,9 @@ class _ListNoteViewState extends State<ListNoteView> {
                     textColor:
                         _isFinished[index] ? Colors.white38 : Colors.white,
                     //tileColor: const Color.fromARGB(255, 234, 211, 255),
-                    /*   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ), */
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                     dense: true,
                     onTap: () {
                       setState(() {
@@ -121,7 +121,7 @@ ActionPane startActionPane(CloudNote note, ListNoteView widget) {
           Share.share('Todoify app: $text');
           showSnackBar(
             context,
-            "Task is being shared...",
+            "Choose an option to share your task.",
             Colors.blue,
           );
         },

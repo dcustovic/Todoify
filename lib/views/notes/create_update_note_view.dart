@@ -102,6 +102,8 @@ class _AddNoteViewState extends State<AddNoteView> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 95, 81, 223),
       appBar: AppBar(
+        leading:
+            noteArgs != null ? const BackButton(color: Colors.white) : null,
         title: noteArgs != null
             ? const Text("Edit Task")
             : const Text("Create a New Task"),
@@ -152,9 +154,6 @@ class _AddNoteViewState extends State<AddNoteView> {
                         hintText: 'What must you do?',
                         //fillColor: Colors.white60,
                       ),
-                      onChanged: (value) {
-                        //shareText = value;
-                      },
                     ),
                   ),
                 ),
