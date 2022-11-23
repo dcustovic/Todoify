@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_flutter/services/auth/auth_service.dart';
 import 'package:notes_flutter/services/cloud/cloud_note.dart';
@@ -124,29 +125,32 @@ class _AddNoteViewState extends State<AddNoteView> {
                     KeyboardActionsItem(focusNode: _focusInput),
                   ],
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 15),
-                  child: TextField(
-                    focusNode: _focusInput,
-                    maxLines: null,
-                    keyboardType: TextInputType.multiline,
-                    style: const TextStyle(
-                      color: Colors.white,
-                    ),
-                    controller: _textController,
-                    decoration: InputDecoration(
-                      fillColor: const Color.fromARGB(94, 29, 8, 63),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                        borderSide: const BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
+                child: FadeIn(
+                  duration: const Duration(seconds: 1),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 15),
+                    child: TextField(
+                      focusNode: _focusInput,
+                      maxLines: null,
+                      keyboardType: TextInputType.multiline,
+                      style: const TextStyle(
+                        color: Colors.white,
                       ),
-                      filled: true,
-                      hintStyle: const TextStyle(color: Colors.white70),
-                      hintText: 'What must you do?',
-                      //fillColor: Colors.white60,
+                      controller: _textController,
+                      decoration: InputDecoration(
+                        fillColor: const Color.fromARGB(94, 29, 8, 63),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                          borderSide: const BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        filled: true,
+                        hintStyle: const TextStyle(color: Colors.white70),
+                        hintText: 'What must you do?',
+                        //fillColor: Colors.white60,
+                      ),
                     ),
                   ),
                 ),

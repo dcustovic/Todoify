@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:share_plus/share_plus.dart';
@@ -35,53 +36,57 @@ class _ListNoteViewState extends State<ListNoteView> {
       itemBuilder: (context, index) {
         final note = widget.notes.elementAt(index);
 
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: PhysicalShape(
-            color: _isFinished[index]
-                //const Color.fromARGB(108, 28, 0, 66)
-                ? const Color.fromARGB(152, 39, 39, 39)
-                : const Color.fromARGB(94, 29, 8, 63),
-            elevation: 1,
-            shadowColor: const Color.fromARGB(38, 33, 0, 87),
-            clipper: ShapeBorderClipper(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
+        return FadeIn(
+          duration: const Duration(seconds: 1),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: PhysicalShape(
+              color: _isFinished[index]
+                  //const Color.fromARGB(108, 28, 0, 66)
+                  ? const Color.fromARGB(152, 39, 39, 39)
+                  : const Color.fromARGB(94, 29, 8, 63),
+              elevation: 1,
+              shadowColor: const Color.fromARGB(38, 33, 0, 87),
+              clipper: ShapeBorderClipper(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
               ),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20.0),
-              child: SlidableAutoCloseBehavior(
-                child: Slidable(
-                  key: ValueKey(note),
-                  startActionPane: startActionPane(note, widget),
-                  endActionPane: endActionPane(context, note, widget),
-                  child: ListTile(
-                    visualDensity: const VisualDensity(vertical: 0.15),
-                    contentPadding: const EdgeInsets.only(left: 12, right: 12),
-                    title: Text(
-                      note.text,
-                      style: _isFinished[index]
-                          ? const TextStyle(
-                              decoration: TextDecoration.lineThrough,
-                            )
-                          : null,
-                      //maxLines: 1,
-                      //softWrap: true,
-                      //overflow: TextOverflow.ellipsis,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: SlidableAutoCloseBehavior(
+                  child: Slidable(
+                    key: ValueKey(note),
+                    startActionPane: startActionPane(note, widget),
+                    endActionPane: endActionPane(context, note, widget),
+                    child: ListTile(
+                      visualDensity: const VisualDensity(vertical: 0.15),
+                      contentPadding:
+                          const EdgeInsets.only(left: 12, right: 12),
+                      title: Text(
+                        note.text,
+                        style: _isFinished[index]
+                            ? const TextStyle(
+                                decoration: TextDecoration.lineThrough,
+                              )
+                            : null,
+                        //maxLines: 1,
+                        //softWrap: true,
+                        //overflow: TextOverflow.ellipsis,
+                      ),
+                      textColor:
+                          _isFinished[index] ? Colors.white38 : Colors.white,
+                      //tileColor: const Color.fromARGB(255, 234, 211, 255),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      dense: true,
+                      onTap: () {
+                        setState(() {
+                          _isFinished[index] = !_isFinished[index];
+                        });
+                      },
                     ),
-                    textColor:
-                        _isFinished[index] ? Colors.white38 : Colors.white,
-                    //tileColor: const Color.fromARGB(255, 234, 211, 255),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    dense: true,
-                    onTap: () {
-                      setState(() {
-                        _isFinished[index] = !_isFinished[index];
-                      });
-                    },
                   ),
                 ),
               ),

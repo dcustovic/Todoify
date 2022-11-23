@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
 import 'package:notes_flutter/constants/routes.dart';
@@ -56,13 +57,16 @@ class _LoginViewState extends State<LoginView> {
               color: const Color.fromARGB(198, 25, 2, 53),
               height: 230,
               alignment: Alignment.centerLeft,
-              child: const Padding(
-                padding: EdgeInsets.only(left: 20),
-                child: Text(
-                  "Login",
-                  style: TextStyle(
-                    fontSize: 33,
-                    color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: FadeIn(
+                  duration: const Duration(seconds: 1),
+                  child: const Text(
+                    "Login",
+                    style: TextStyle(
+                      fontSize: 33,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -135,129 +139,138 @@ class _LoginViewState extends State<LoginView> {
               ),
             ),
           ), */
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: ListView(
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(232, 255, 255, 255),
-                    //border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color.fromARGB(255, 95, 95, 95)
-                            .withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 9,
-                        offset:
-                            const Offset(3, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  margin: const EdgeInsets.fromLTRB(20, 300, 20, 10),
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 25),
-                  child: Column(
-                    children: <Widget>[
-                      TextField(
-                        controller: _email,
-                        autocorrect: false,
-                        enableSuggestions: false,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          icon: const Icon(
-                            Icons.email,
-                            color: Color.fromARGB(255, 139, 139, 139),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade100),
-                          ),
-                          labelText: "Email",
-                          enabledBorder: InputBorder.none,
-                          labelStyle: const TextStyle(color: Colors.grey),
+          FadeIn(
+            duration: const Duration(seconds: 1),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: ListView(
+                children: <Widget>[
+                  Container(
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(232, 255, 255, 255),
+                      //border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color.fromARGB(255, 95, 95, 95)
+                              .withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 9,
+                          offset:
+                              const Offset(3, 3), // changes position of shadow
                         ),
-                      ),
-                      TextField(
-                        controller: _password,
-                        obscureText: true,
-                        autocorrect: false,
-                        enableSuggestions: false,
-                        decoration: InputDecoration(
-                            icon: const Icon(Icons.vpn_key,
-                                color: Color.fromARGB(255, 139, 139, 139)),
+                      ],
+                    ),
+                    margin: const EdgeInsets.fromLTRB(20, 300, 20, 10),
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 25),
+                    child: Column(
+                      children: <Widget>[
+                        TextField(
+                          controller: _email,
+                          autocorrect: false,
+                          enableSuggestions: false,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                            icon: const Icon(
+                              Icons.email,
+                              color: Color.fromARGB(255, 139, 139, 139),
+                            ),
                             focusedBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey.shade100)),
-                            labelText: "Password",
+                              borderSide:
+                                  BorderSide(color: Colors.grey.shade100),
+                            ),
+                            labelText: "Email",
                             enabledBorder: InputBorder.none,
-                            labelStyle: const TextStyle(color: Colors.grey)),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Container(
-                  margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
-                  child: Center(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      height: 40,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: const Color.fromARGB(153, 34, 8, 68),
+                            labelStyle: const TextStyle(color: Colors.grey),
+                          ),
                         ),
-                        child: Material(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.transparent,
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(15),
-                            onTap: () async {
-                              final email = _email.text;
-                              final password = _password.text;
+                        TextField(
+                          controller: _password,
+                          obscureText: true,
+                          autocorrect: false,
+                          enableSuggestions: false,
+                          decoration: InputDecoration(
+                              icon: const Icon(Icons.vpn_key,
+                                  color: Color.fromARGB(255, 139, 139, 139)),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey.shade100)),
+                              labelText: "Password",
+                              enabledBorder: InputBorder.none,
+                              labelStyle: const TextStyle(color: Colors.grey)),
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  FadeIn(
+                    duration: const Duration(seconds: 2),
+                    child: Container(
+                      margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
+                      child: Center(
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          height: 40,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: const Color.fromARGB(153, 34, 8, 68),
+                            ),
+                            child: Material(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.transparent,
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(15),
+                                onTap: () async {
+                                  final email = _email.text;
+                                  final password = _password.text;
 
-                              try {
-                                await AuthService.firebase().logIn(
-                                  email: email,
-                                  password: password,
-                                );
+                                  try {
+                                    await AuthService.firebase().logIn(
+                                      email: email,
+                                      password: password,
+                                    );
 
-                                final currentUser =
-                                    AuthService.firebase().currentUser;
+                                    final currentUser =
+                                        AuthService.firebase().currentUser;
 
-                                if (currentUser?.isEmailVerified ?? false) {
-                                  if (!mounted) return;
-                                  Navigator.of(context).pushNamedAndRemoveUntil(
-                                    homeRoute,
-                                    (route) => false,
-                                  );
-                                } else {
-                                  if (!mounted) return;
-                                  Navigator.of(context).pushNamedAndRemoveUntil(
-                                    verifyEmailRoute,
-                                    (route) => false,
-                                  );
-                                }
-                              } on UserNotFoundAuthException {
-                                await showErrorMessage(
-                                    context, 'User not found.');
-                              } on WrongPasswordAuthException {
-                                await showErrorMessage(
-                                    context, "Wrong user credentials.");
-                              } on EmailInvalidAuthException {
-                                await showErrorMessage(
-                                    context, 'Invalid email address.');
-                              } on GenericAuthException {
-                                await showErrorMessage(
-                                    context, 'Authentication problem.');
-                              }
-                            },
-                            child: const Center(
-                              child: Text(
-                                "LOGIN",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700),
+                                    if (currentUser?.isEmailVerified ?? false) {
+                                      if (!mounted) return;
+                                      Navigator.of(context)
+                                          .pushNamedAndRemoveUntil(
+                                        homeRoute,
+                                        (route) => false,
+                                      );
+                                    } else {
+                                      if (!mounted) return;
+                                      Navigator.of(context)
+                                          .pushNamedAndRemoveUntil(
+                                        verifyEmailRoute,
+                                        (route) => false,
+                                      );
+                                    }
+                                  } on UserNotFoundAuthException {
+                                    await showErrorMessage(
+                                        context, 'User not found.');
+                                  } on WrongPasswordAuthException {
+                                    await showErrorMessage(
+                                        context, "Wrong user credentials.");
+                                  } on EmailInvalidAuthException {
+                                    await showErrorMessage(
+                                        context, 'Invalid email address.');
+                                  } on GenericAuthException {
+                                    await showErrorMessage(
+                                        context, 'Authentication problem.');
+                                  }
+                                },
+                                child: const Center(
+                                  child: Text(
+                                    "LOGIN",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -265,36 +278,39 @@ class _LoginViewState extends State<LoginView> {
                       ),
                     ),
                   ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    const Text(
-                      "DON'T HAVE AN ACCOUNT?",
-                      style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.white70,
-                          fontWeight: FontWeight.w500),
+                  FadeIn(
+                    duration: const Duration(seconds: 2),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        const Text(
+                          "DON'T HAVE AN ACCOUNT?",
+                          style: TextStyle(
+                              fontSize: 11,
+                              color: Colors.white70,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              registerRoute,
+                              (route) => false,
+                            );
+                          },
+                          child: const Text(
+                            "REGISTER",
+                            style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                fontSize: 10,
+                                color: Color.fromARGB(255, 231, 217, 253),
+                                fontWeight: FontWeight.w700),
+                          ),
+                        )
+                      ],
                     ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          registerRoute,
-                          (route) => false,
-                        );
-                      },
-                      child: const Text(
-                        "REGISTER",
-                        style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            fontSize: 10,
-                            color: Color.fromARGB(255, 231, 217, 253),
-                            fontWeight: FontWeight.w700),
-                      ),
-                    )
-                  ],
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           )
         ],

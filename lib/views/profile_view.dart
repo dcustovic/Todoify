@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
@@ -88,90 +89,93 @@ class _ProfileViewState extends State<ProfileView> {
           backgroundColor: const Color.fromARGB(255, 95, 81, 223),
           elevation: 0,
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 110,
-              ),
-              Container(
-                decoration:
-                    const BoxDecoration(shape: BoxShape.circle, boxShadow: [
-                  BoxShadow(
-                    color: Color.fromARGB(255, 37, 37, 37),
-                    //spreadRadius: 1,
-                    blurRadius: 5,
-                    // changes position of shadow
-                  ),
-                ]),
-                child: CircleAvatar(
-                  radius: 53,
-                  backgroundColor: Color.fromARGB(255, 231, 231, 231),
-                  child: ClipOval(
-                    child: Image.network(
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                      currentUser!.photo!,
-                      errorBuilder: (BuildContext context, Object exception,
-                          StackTrace? stackTrace) {
-                        return const CircleAvatar(
-                          radius: 53,
-                          backgroundColor: Colors.transparent,
-                          child: Icon(
-                            Icons.person,
-                            size: 100,
-                            color: Colors.white,
-                          ),
-                        );
-                      },
+        body: FadeIn(
+          duration: const Duration(seconds: 1),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 110,
+                ),
+                Container(
+                  decoration:
+                      const BoxDecoration(shape: BoxShape.circle, boxShadow: [
+                    BoxShadow(
+                      color: Color.fromARGB(255, 37, 37, 37),
+                      //spreadRadius: 1,
+                      blurRadius: 5,
+                      // changes position of shadow
                     ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                userEmail,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 17,
-                ),
-              ),
-              const SizedBox(height: 40),
-              TextButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                        //side: BorderSide(color: Colors.deepOrange),
+                  ]),
+                  child: CircleAvatar(
+                    radius: 53,
+                    backgroundColor: Color.fromARGB(255, 231, 231, 231),
+                    child: ClipOval(
+                      child: Image.network(
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                        currentUser!.photo!,
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          return const CircleAvatar(
+                            radius: 53,
+                            backgroundColor: Colors.transparent,
+                            child: Icon(
+                              Icons.person,
+                              size: 100,
+                              color: Colors.white,
+                            ),
+                          );
+                        },
                       ),
                     ),
-                    backgroundColor: MaterialStateProperty.all(
-                      Colors.white,
-                    ),
                   ),
-                  onPressed: () async {
-                    final wantsToLogout = await showLogoutMessage(context);
-
-                    if (wantsToLogout) {
-                      await AuthService.firebase().logOut();
-
-                      if (!mounted) return;
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        loginRoute,
-                        (route) => false,
-                      );
-                    }
-                  },
-                  child: const Text(
-                    "Log out",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 15,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  userEmail,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                  ),
+                ),
+                const SizedBox(height: 40),
+                TextButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                          //side: BorderSide(color: Colors.deepOrange),
+                        ),
+                      ),
+                      backgroundColor: MaterialStateProperty.all(
+                        Colors.white,
+                      ),
                     ),
-                  ))
-            ],
+                    onPressed: () async {
+                      final wantsToLogout = await showLogoutMessage(context);
+
+                      if (wantsToLogout) {
+                        await AuthService.firebase().logOut();
+
+                        if (!mounted) return;
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          loginRoute,
+                          (route) => false,
+                        );
+                      }
+                    },
+                    child: const Text(
+                      "Log out",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                      ),
+                    ))
+              ],
+            ),
           ),
         ));
   }
