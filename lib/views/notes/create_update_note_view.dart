@@ -3,9 +3,7 @@ import 'package:notes_flutter/services/auth/auth_service.dart';
 import 'package:notes_flutter/services/cloud/cloud_note.dart';
 import 'package:notes_flutter/services/cloud/cloud_storage_firebase.dart';
 import 'package:notes_flutter/utilities/loading_indicator.dart';
-import 'package:share_plus/share_plus.dart';
-
-import '../../utilities/show_dialog_messages.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 
 class AddNoteView extends StatefulWidget {
   const AddNoteView({super.key});
@@ -16,7 +14,7 @@ class AddNoteView extends StatefulWidget {
 
 class _AddNoteViewState extends State<AddNoteView> {
   CloudNote? _note;
-
+  final FocusNode _focusInput = FocusNode();
   late final CloudStorageFirebase _notesService;
   late final TextEditingController _textController;
 
@@ -78,9 +76,7 @@ class _AddNoteViewState extends State<AddNoteView> {
 
   void _textListener() async {
     final note = _note;
-    if (note == null) {
-      return;
-    }
+    if (note == null) return;
 
     final text = _textController.text;
 
@@ -118,42 +114,39 @@ class _AddNoteViewState extends State<AddNoteView> {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
               _note = snapshot.data;
-
               _setupTextListener();
 
-              return Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15),
-                child: PhysicalShape(
-                  color: const Color.fromARGB(94, 29, 8, 63),
-                  elevation: 1,
-                  shadowColor: const Color.fromARGB(34, 33, 0, 87),
-                  clipper: ShapeBorderClipper(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+              return KeyboardActions(
+                config: KeyboardActionsConfig(
+                  keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+                  keyboardBarColor: Colors.white,
+                  actions: [
+                    KeyboardActionsItem(focusNode: _focusInput),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: TextField(
+                    focusNode: _focusInput,
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                    style: const TextStyle(
+                      color: Colors.white,
                     ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: TextField(
-                      maxLines: null,
-                      keyboardType: TextInputType.text,
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
-                      controller: _textController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                          borderSide: const BorderSide(
-                            width: 0,
-                            style: BorderStyle.none,
-                          ),
+                    controller: _textController,
+                    decoration: InputDecoration(
+                      fillColor: const Color.fromARGB(94, 29, 8, 63),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: const BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
                         ),
-                        filled: true,
-                        hintStyle: const TextStyle(color: Colors.white70),
-                        hintText: 'What must you do?',
-                        //fillColor: Colors.white60,
                       ),
+                      filled: true,
+                      hintStyle: const TextStyle(color: Colors.white70),
+                      hintText: 'What must you do?',
+                      //fillColor: Colors.white60,
                     ),
                   ),
                 ),
