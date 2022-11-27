@@ -1,7 +1,9 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_flutter/services/auth/auth_service.dart';
 import 'package:notes_flutter/services/cloud/cloud_note.dart';
+import 'package:notes_flutter/services/cloud/cloud_storage_constants.dart';
 import 'package:notes_flutter/services/cloud/cloud_storage_firebase.dart';
 import 'package:notes_flutter/utilities/loading_indicator.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
@@ -71,7 +73,10 @@ class _AddNoteViewState extends State<AddNoteView> {
 
     if (currentText.isNotEmpty && note != null) {
       await _notesService.updateNote(
-          documentId: note.documentId, text: currentText, completed: false);
+        documentId: note.documentId,
+        text: currentText,
+        completed: false,
+      );
     }
   }
 

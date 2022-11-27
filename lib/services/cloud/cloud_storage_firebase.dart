@@ -20,8 +20,11 @@ class CloudStorageFirebase {
     }
   }
 
-  Future<void> updateNote(
-      {required documentId, required text, required completed}) async {
+  Future<void> updateNote({
+    required documentId,
+    required text,
+    required completed,
+  }) async {
     try {
       await notes.doc(documentId).update({
         textFieldName: text,
