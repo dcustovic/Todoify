@@ -1,16 +1,8 @@
-import 'dart:io';
-
 import 'package:animate_do/animate_do.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:notes_flutter/utilities/loading_indicator.dart';
-import 'package:path/path.dart';
-
 import '../constants/routes.dart';
 import '../services/auth/auth_service.dart';
-import '../services/auth/auth_user.dart';
 import '../utilities/show_dialog_messages.dart';
 
 class ProfileView extends StatefulWidget {

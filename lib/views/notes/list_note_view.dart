@@ -1,8 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:intl/intl.dart';
-import 'package:notes_flutter/utilities/show_dialog_messages.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../services/cloud/cloud_note.dart';
 import '../../services/cloud/cloud_storage_firebase.dart';
