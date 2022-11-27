@@ -97,63 +97,66 @@ class _ProfileViewState extends State<ProfileView> {
           backgroundColor: const Color.fromARGB(255, 95, 81, 223),
           elevation: 0,
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 90,
-              ),
-              const CircleAvatar(
-                radius: 70,
-                backgroundColor: Colors.transparent,
-                child: Icon(
-                  Icons.person,
-                  size: 130,
-                  color: Colors.white,
+        body: FadeIn(
+          duration: const Duration(seconds: 1),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 90,
                 ),
-              ),
-              Text(
-                userEmail,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 17,
+                const CircleAvatar(
+                  radius: 70,
+                  backgroundColor: Colors.transparent,
+                  child: Icon(
+                    Icons.person,
+                    size: 130,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 40),
-              TextButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                        //side: BorderSide(color: Colors.deepOrange),
+                Text(
+                  userEmail,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                  ),
+                ),
+                const SizedBox(height: 40),
+                TextButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                          //side: BorderSide(color: Colors.deepOrange),
+                        ),
+                      ),
+                      backgroundColor: MaterialStateProperty.all(
+                        Colors.white,
                       ),
                     ),
-                    backgroundColor: MaterialStateProperty.all(
-                      Colors.white,
-                    ),
-                  ),
-                  onPressed: () async {
-                    final wantsToLogout = await showLogoutMessage(context);
+                    onPressed: () async {
+                      final wantsToLogout = await showLogoutMessage(context);
 
-                    if (wantsToLogout) {
-                      await AuthService.firebase().logOut();
+                      if (wantsToLogout) {
+                        await AuthService.firebase().logOut();
 
-                      if (!mounted) return;
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        loginRoute,
-                        (route) => false,
-                      );
-                    }
-                  },
-                  child: const Text(
-                    "Log out",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 15,
-                    ),
-                  ))
-            ],
+                        if (!mounted) return;
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          loginRoute,
+                          (route) => false,
+                        );
+                      }
+                    },
+                    child: const Text(
+                      "Log out",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                      ),
+                    ))
+              ],
+            ),
           ),
         ));
   }
