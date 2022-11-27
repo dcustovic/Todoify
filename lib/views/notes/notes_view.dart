@@ -91,6 +91,7 @@ class _NotesViewState extends State<NotesView>
               case ConnectionState.active:
                 if (snapshot.hasData) {
                   final allNotes = snapshot.data;
+
                   if (allNotes!.isEmpty) {
                     return const ListNoteEmpty();
                   }

@@ -71,7 +71,7 @@ class _AddNoteViewState extends State<AddNoteView> {
 
     if (currentText.isNotEmpty && note != null) {
       await _notesService.updateNote(
-          documentId: note.documentId, text: currentText);
+          documentId: note.documentId, text: currentText, completed: false);
     }
   }
 
@@ -84,6 +84,7 @@ class _AddNoteViewState extends State<AddNoteView> {
     await _notesService.updateNote(
       documentId: note.documentId,
       text: text,
+      completed: false,
     );
   }
 
@@ -117,40 +118,44 @@ class _AddNoteViewState extends State<AddNoteView> {
               _note = snapshot.data;
               _setupTextListener();
 
-              return KeyboardActions(
-                config: KeyboardActionsConfig(
-                  keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
-                  keyboardBarColor: Colors.white70,
-                  actions: [
-                    KeyboardActionsItem(focusNode: _focusInput),
-                  ],
-                ),
-                child: FadeIn(
-                  duration: const Duration(seconds: 1),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 15, right: 15),
-                    child: TextField(
-                      focusNode: _focusInput,
-                      maxLines: null,
-                      keyboardType: TextInputType.multiline,
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
-                      controller: _textController,
-                      decoration: InputDecoration(
-                        fillColor: const Color.fromARGB(94, 29, 8, 63),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                          borderSide: const BorderSide(
-                            width: 0,
-                            style: BorderStyle.none,
+              return FadeIn(
+                duration: const Duration(seconds: 1),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: KeyboardActions(
+                    config: KeyboardActionsConfig(
+                      keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+                      keyboardBarColor: Colors.white70,
+                      actions: [
+                        KeyboardActionsItem(focusNode: _focusInput),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        TextField(
+                          focusNode: _focusInput,
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                          controller: _textController,
+                          decoration: InputDecoration(
+                            fillColor: const Color.fromARGB(94, 29, 8, 63),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: const BorderSide(
+                                width: 0,
+                                style: BorderStyle.none,
+                              ),
+                            ),
+                            filled: true,
+                            hintStyle: const TextStyle(color: Colors.white70),
+                            hintText: 'What must you do?',
+                            //fillColor: Colors.white60,
                           ),
                         ),
-                        filled: true,
-                        hintStyle: const TextStyle(color: Colors.white70),
-                        hintText: 'What must you do?',
-                        //fillColor: Colors.white60,
-                      ),
+                      ],
                     ),
                   ),
                 ),

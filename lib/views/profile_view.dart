@@ -10,6 +10,7 @@ import 'package:path/path.dart';
 
 import '../constants/routes.dart';
 import '../services/auth/auth_service.dart';
+import '../services/auth/auth_user.dart';
 import '../utilities/show_dialog_messages.dart';
 
 class ProfileView extends StatefulWidget {
@@ -21,14 +22,21 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   String get userEmail => AuthService.firebase().currentUser!.email;
-  final currentUser = AuthService.firebase().currentUser;
 
   firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
 
-  File? _photo;
+  /*  File? _photo;
   String imageUrl = '';
   final ImagePicker _picker = ImagePicker();
+
+  String getImageFromMail(String userPhoto) {
+    if (userPhoto == null) {
+      return '';
+    } else {
+      return userPhoto;
+    }
+  }
 
   Future imgFromGallery() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -77,7 +85,7 @@ class _ProfileViewState extends State<ProfileView> {
     } catch (e) {
       print('error occured');
     }
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -85,97 +93,67 @@ class _ProfileViewState extends State<ProfileView> {
         backgroundColor: const Color.fromARGB(255, 95, 81, 223),
         appBar: AppBar(
           title: const Text("Profile"),
-          titleSpacing: 20.5,
+          titleSpacing: 20,
           backgroundColor: const Color.fromARGB(255, 95, 81, 223),
           elevation: 0,
         ),
-        body: FadeIn(
-          duration: const Duration(seconds: 1),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 110,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 90,
+              ),
+              const CircleAvatar(
+                radius: 70,
+                backgroundColor: Colors.transparent,
+                child: Icon(
+                  Icons.person,
+                  size: 130,
+                  color: Colors.white,
                 ),
-                Container(
-                  decoration:
-                      const BoxDecoration(shape: BoxShape.circle, boxShadow: [
-                    BoxShadow(
-                      color: Color.fromARGB(255, 37, 37, 37),
-                      //spreadRadius: 1,
-                      blurRadius: 5,
-                      // changes position of shadow
-                    ),
-                  ]),
-                  child: CircleAvatar(
-                    radius: 53,
-                    backgroundColor: Color.fromARGB(255, 231, 231, 231),
-                    child: ClipOval(
-                      child: Image.network(
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                        currentUser!.photo!,
-                        errorBuilder: (BuildContext context, Object exception,
-                            StackTrace? stackTrace) {
-                          return const CircleAvatar(
-                            radius: 53,
-                            backgroundColor: Colors.transparent,
-                            child: Icon(
-                              Icons.person,
-                              size: 100,
-                              color: Colors.white,
-                            ),
-                          );
-                        },
+              ),
+              Text(
+                userEmail,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 17,
+                ),
+              ),
+              const SizedBox(height: 40),
+              TextButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        //side: BorderSide(color: Colors.deepOrange),
                       ),
+                    ),
+                    backgroundColor: MaterialStateProperty.all(
+                      Colors.white,
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  userEmail,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 17,
-                  ),
-                ),
-                const SizedBox(height: 40),
-                TextButton(
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                          //side: BorderSide(color: Colors.deepOrange),
-                        ),
-                      ),
-                      backgroundColor: MaterialStateProperty.all(
-                        Colors.white,
-                      ),
+                  onPressed: () async {
+                    final wantsToLogout = await showLogoutMessage(context);
+
+                    if (wantsToLogout) {
+                      await AuthService.firebase().logOut();
+
+                      if (!mounted) return;
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        loginRoute,
+                        (route) => false,
+                      );
+                    }
+                  },
+                  child: const Text(
+                    "Log out",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
                     ),
-                    onPressed: () async {
-                      final wantsToLogout = await showLogoutMessage(context);
-
-                      if (wantsToLogout) {
-                        await AuthService.firebase().logOut();
-
-                        if (!mounted) return;
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          loginRoute,
-                          (route) => false,
-                        );
-                      }
-                    },
-                    child: const Text(
-                      "Log out",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                      ),
-                    ))
-              ],
-            ),
+                  ))
+            ],
           ),
         ));
   }

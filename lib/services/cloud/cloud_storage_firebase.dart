@@ -20,9 +20,13 @@ class CloudStorageFirebase {
     }
   }
 
-  Future<void> updateNote({required documentId, required text}) async {
+  Future<void> updateNote(
+      {required documentId, required text, required completed}) async {
     try {
-      await notes.doc(documentId).update({textFieldName: text});
+      await notes.doc(documentId).update({
+        textFieldName: text,
+        completedFieldName: completed,
+      });
     } catch (e) {
       throw CouldNotUpdateNoteException();
     }
@@ -59,9 +63,15 @@ class CloudStorageFirebase {
       {
         ownerUserIdFieldName: ownerId,
         textFieldName: '',
+        completedFieldName: false,
       },
     );
     final data = await document.get();
-    return CloudNote(documentId: data.id, ownerUserId: ownerId, text: '');
+    return CloudNote(
+      documentId: data.id,
+      ownerUserId: ownerId,
+      text: '',
+      completed: false,
+    );
   }
 }
