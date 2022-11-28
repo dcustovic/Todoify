@@ -7,7 +7,7 @@ class CloudNote {
   final String documentId;
   final String ownerUserId;
   final String text;
-  final bool completed;
+  final bool? completed;
 
   const CloudNote({
     required this.documentId,

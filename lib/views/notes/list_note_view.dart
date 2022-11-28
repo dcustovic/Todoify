@@ -92,7 +92,7 @@ class _ListNoteViewState extends State<ListNoteView> {
                         await _notesService.updateNote(
                           documentId: note.documentId,
                           text: note.text,
-                          completed: !note.completed,
+                          completed: !note.completed!,
                         );
                       },
                     ),
