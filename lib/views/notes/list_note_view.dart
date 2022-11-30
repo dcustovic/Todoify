@@ -1,3 +1,4 @@
+import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -29,6 +30,7 @@ class ListNoteView extends StatefulWidget {
 
 class _ListNoteViewState extends State<ListNoteView> {
   late final CloudStorageFirebase _notesService;
+  DateTime _selectedDate = DateTime.now();
 
   @override
   void initState() {
@@ -38,134 +40,175 @@ class _ListNoteViewState extends State<ListNoteView> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimationLimiter(
-      child: ListView.builder(
-        padding: const EdgeInsets.only(left: 15, right: 15),
-        itemCount: widget.notes.length,
-        itemBuilder: (context, index) {
-          final note = widget.notes.elementAt(index);
-          String formattedDate =
-              DateFormat('dd-MM-yyyy').format(note.date!.toDate());
+    print(_selectedDate);
+    return Stack(
+      children: [
+        DatePicker(
+          DateTime.now(),
+          initialSelectedDate: DateTime.now(),
+          selectionColor: const Color.fromARGB(255, 33, 0, 90),
+          selectedTextColor: Colors.white,
+          dateTextStyle: const TextStyle(color: Colors.white),
+          dayTextStyle: const TextStyle(color: Colors.white),
+          monthTextStyle: const TextStyle(color: Colors.white),
+          onDateChange: (date) {
+            setState(() {
+              _selectedDate = date;
+            });
+          },
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 100),
+          child: AnimationLimiter(
+            child: ListView.builder(
+              padding: const EdgeInsets.only(left: 15, right: 15),
+              itemCount: widget.notes.length,
+              itemBuilder: (context, index) {
+                final note = widget.notes.elementAt(index);
 
-          return AnimationConfiguration.staggeredList(
-            position: index,
-            duration: const Duration(milliseconds: 375),
-            child: SlideAnimation(
-              horizontalOffset: 420.0,
-              child: FadeInAnimation(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 15),
-                  child: PhysicalShape(
-                    color: note.completed == false
-                        ? const Color.fromARGB(94, 29, 8, 63)
-                        : const Color.fromARGB(152, 39, 39, 39),
-                    elevation: 10,
-                    shadowColor: const Color.fromARGB(108, 27, 0, 71),
-                    clipper: ShapeBorderClipper(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20.0),
-                      child: SlidableAutoCloseBehavior(
-                        child: Slidable(
-                          key: ValueKey(note.documentId),
-                          startActionPane: startActionPane(note, widget),
-                          endActionPane: endActionPane(context, note, widget),
-                          child: ListTile(
-                            visualDensity: const VisualDensity(vertical: 0.15),
-                            contentPadding: const EdgeInsets.only(
-                                left: 15, right: 15, top: 13, bottom: 10),
-                            title: Text(
-                              note.text,
-                              style: note.completed == false
-                                  ? const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                    )
-                                  : const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      decoration: TextDecoration.lineThrough,
-                                    ),
-                              //maxLines: 1,
-                              //softWrap: true,
-                              //overflow: TextOverflow.ellipsis,
+                String formattedDate =
+                    DateFormat('dd-MM-yyyy').format(note.date!.toDate());
+                String formattedDateSelected =
+                    DateFormat('dd-MM-yyyy').format(_selectedDate);
+
+                if (formattedDate == formattedDateSelected) {
+                  return AnimationConfiguration.staggeredList(
+                    position: index,
+                    duration: const Duration(milliseconds: 375),
+                    child: SlideAnimation(
+                      horizontalOffset: 420.0,
+                      child: FadeInAnimation(
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 15),
+                          child: PhysicalShape(
+                            color: note.completed == false
+                                ? const Color.fromARGB(94, 29, 8, 63)
+                                : const Color.fromARGB(152, 39, 39, 39),
+                            elevation: 10,
+                            shadowColor: const Color.fromARGB(108, 27, 0, 71),
+                            clipper: ShapeBorderClipper(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
                             ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: SlidableAutoCloseBehavior(
+                                child: Slidable(
+                                  key: ValueKey(note.documentId),
+                                  startActionPane:
+                                      startActionPane(note, widget),
+                                  endActionPane:
+                                      endActionPane(context, note, widget),
+                                  child: ListTile(
+                                    visualDensity:
+                                        const VisualDensity(vertical: 0.15),
+                                    contentPadding: const EdgeInsets.only(
+                                        left: 15,
+                                        right: 15,
+                                        top: 13,
+                                        bottom: 10),
+                                    title: Text(
+                                      note.text,
+                                      style: note.completed == false
+                                          ? const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14,
+                                            )
+                                          : const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              decoration:
+                                                  TextDecoration.lineThrough,
+                                            ),
+                                      //maxLines: 1,
+                                      //softWrap: true,
+                                      //overflow: TextOverflow.ellipsis,
+                                    ),
 
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 4.5),
-                                  child: Text(
-                                    note.description!,
-                                    style: note.completed == false
-                                        ? const TextStyle(fontSize: 12.5)
-                                        : const TextStyle(
-                                            fontSize: 12.5,
-                                            decoration:
-                                                TextDecoration.lineThrough,
-                                          ),
-                                  ),
-                                ),
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      const WidgetSpan(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 11, right: 4),
-                                          child: Icon(
-                                            Icons.calendar_month_rounded,
-                                            color: Colors.deepOrange,
-                                            size: 19,
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 4.5),
+                                          child: Text(
+                                            note.description!,
+                                            style: note.completed == false
+                                                ? const TextStyle(
+                                                    fontSize: 12.5)
+                                                : const TextStyle(
+                                                    fontSize: 12.5,
+                                                    decoration: TextDecoration
+                                                        .lineThrough,
+                                                  ),
                                           ),
                                         ),
-                                      ),
-                                      TextSpan(
-                                        text: formattedDate,
-                                        style: note.completed == false
-                                            ? const TextStyle(fontSize: 12.5)
-                                            : const TextStyle(
-                                                fontSize: 12.5,
-                                                color: Colors.white38,
+                                        RichText(
+                                          text: TextSpan(
+                                            children: [
+                                              const WidgetSpan(
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: 11, right: 4),
+                                                  child: Icon(
+                                                    Icons
+                                                        .calendar_month_rounded,
+                                                    color: Colors.deepOrange,
+                                                    size: 19,
+                                                  ),
+                                                ),
                                               ),
-                                      ),
-                                    ],
+                                              TextSpan(
+                                                text: formattedDate,
+                                                style: note.completed == false
+                                                    ? const TextStyle(
+                                                        fontSize: 12.5)
+                                                    : const TextStyle(
+                                                        fontSize: 12.5,
+                                                        color: Colors.white38,
+                                                      ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    textColor: note.completed == false
+                                        ? Colors.white
+                                        : Colors.white38,
+                                    //tileColor: const Color.fromARGB(255, 234, 211, 255),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    dense: true,
+                                    onTap: () async {
+                                      await _notesService.updateNote(
+                                        documentId: note.documentId,
+                                        text: note.text,
+                                        description: note.description,
+                                        date: note.date,
+                                        completed: !note.completed!,
+                                      );
+                                    },
                                   ),
-                                )
-                              ],
+                                ),
+                              ),
                             ),
-                            textColor: note.completed == false
-                                ? Colors.white
-                                : Colors.white38,
-                            //tileColor: const Color.fromARGB(255, 234, 211, 255),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            dense: true,
-                            onTap: () async {
-                              await _notesService.updateNote(
-                                documentId: note.documentId,
-                                text: note.text,
-                                description: note.description,
-                                date: note.date,
-                                completed: !note.completed!,
-                              );
-                            },
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-              ),
+                  );
+                } else {
+                  return Container();
+                }
+              },
             ),
-          );
-        },
-      ),
+          ),
+        ),
+      ],
     );
   }
 }
