@@ -170,8 +170,6 @@ class _AddNoteViewState extends State<AddNoteView> {
   Widget build(BuildContext context) {
     final noteArgs = ModalRoute.of(context)?.settings.arguments as CloudNote?;
 
-    print("current _selectedDate: $_selectedDate");
-
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 95, 81, 223),
       appBar: AppBar(
