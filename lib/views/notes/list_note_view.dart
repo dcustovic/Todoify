@@ -1,4 +1,3 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -195,8 +194,11 @@ ActionPane startActionPane(CloudNote note, ListNoteView widget) {
       ),
       SlidableAction(
         onPressed: (context) {
-          final text = note.text;
-          Share.share('Todoify app: $text');
+          final title = note.text;
+          final description = note.description;
+          final date = DateFormat('dd-MM-yyyy').format(note.date!.toDate());
+          Share.share(
+              'Title: $title\n\nDescription: $description\n\nDate: $date');
           showSnackBar(
             context,
             "Choose an option to share your task.",

@@ -10,11 +10,17 @@ class CloudStorageFirebase {
   CloudStorageFirebase._sharedInstance();
   factory CloudStorageFirebase() => _shared;
 
-  final notes = FirebaseFirestore.instance.collection('notes');
+  final notes = FirebaseFirestore.instance.collection('notes').orderBy('date');
 
   Future<void> deleteNote({required documentId}) async {
     try {
-      await notes.doc(documentId).delete();
+      /*  await notes.doc(documentId).delete(); */
+      await notes.get().then((value) => value.docs.forEach((document) async {
+            await FirebaseFirestore.instance
+                .collection('notes')
+                .doc(documentId)
+                .delete();
+          }));
     } catch (e) {
       throw CouldNotDeleteNoteException();
     }
@@ -28,12 +34,23 @@ class CloudStorageFirebase {
     required completed,
   }) async {
     try {
-      await notes.doc(documentId).update({
+      await notes.get().then((value) => value.docs.forEach((document) async {
+            await FirebaseFirestore.instance
+                .collection('notes')
+                .doc(documentId)
+                .update({
+              textFieldName: text,
+              descriptionFieldName: description,
+              dateFieldName: date,
+              completedFieldName: completed,
+            });
+          }));
+      /*   await notes.doc(documentId).update({
         textFieldName: text,
         descriptionFieldName: description,
         dateFieldName: date,
         completedFieldName: completed,
-      });
+      }); */
     } catch (e) {
       throw CouldNotUpdateNoteException();
     }
@@ -66,7 +83,7 @@ class CloudStorageFirebase {
   }
 
   Future<CloudNote> createNewNote({required ownerId}) async {
-    final document = await notes.add(
+    final document = await FirebaseFirestore.instance.collection('notes').add(
       {
         ownerUserIdFieldName: ownerId,
         textFieldName: '',
@@ -75,6 +92,7 @@ class CloudStorageFirebase {
         completedFieldName: false,
       },
     );
+
     final data = await document.get();
     return CloudNote(
       documentId: data.id,
