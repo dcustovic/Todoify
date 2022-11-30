@@ -23,11 +23,15 @@ class CloudStorageFirebase {
   Future<void> updateNote({
     required documentId,
     required text,
+    required description,
+    required date,
     required completed,
   }) async {
     try {
       await notes.doc(documentId).update({
         textFieldName: text,
+        descriptionFieldName: description,
+        dateFieldName: date,
         completedFieldName: completed,
       });
     } catch (e) {
@@ -66,6 +70,8 @@ class CloudStorageFirebase {
       {
         ownerUserIdFieldName: ownerId,
         textFieldName: '',
+        descriptionFieldName: '',
+        dateFieldName: Timestamp.fromDate(DateTime.now()),
         completedFieldName: false,
       },
     );
@@ -74,6 +80,8 @@ class CloudStorageFirebase {
       documentId: data.id,
       ownerUserId: ownerId,
       text: '',
+      description: '',
+      date: Timestamp.fromDate(DateTime.now()),
       completed: false,
     );
   }

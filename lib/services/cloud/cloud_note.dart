@@ -7,12 +7,16 @@ class CloudNote {
   final String documentId;
   final String ownerUserId;
   final String text;
+  final String? description;
+  final Timestamp? date;
   final bool? completed;
 
   const CloudNote({
     required this.documentId,
     required this.ownerUserId,
     required this.text,
+    required this.description,
+    required this.date,
     required this.completed,
   });
 
@@ -20,5 +24,7 @@ class CloudNote {
       : documentId = snapshot.id,
         ownerUserId = snapshot.data()[ownerUserIdFieldName],
         text = snapshot.data()[textFieldName],
+        description = snapshot.data()[descriptionFieldName],
+        date = snapshot.data()[dateFieldName],
         completed = snapshot.data()[completedFieldName];
 }
