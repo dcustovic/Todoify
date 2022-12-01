@@ -59,7 +59,7 @@ class _ListNoteViewState extends State<ListNoteView> {
           },
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 80, right: 15, left: 15),
