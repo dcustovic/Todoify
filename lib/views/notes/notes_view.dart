@@ -38,10 +38,11 @@ class _NotesViewState extends State<NotesView>
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 95, 81, 223),
         appBar: AppBar(
-          title: const Text("Tasks"),
+          title: const Text('Home'),
           titleSpacing: 20.5,
           backgroundColor: const Color.fromARGB(255, 95, 81, 223),
           elevation: 0,
+
           /*  actions: [
           PopupMenuButton<MenuAction>(
             onSelected: (value) async {

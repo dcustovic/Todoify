@@ -201,6 +201,47 @@ class _AddNoteViewState extends State<AddNoteView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextField(
+                          readOnly: true,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 13.5,
+                          ),
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding:
+                                const EdgeInsets.fromLTRB(15, 15, 15, 15),
+                            fillColor: const Color.fromARGB(94, 29, 8, 63),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: const BorderSide(
+                                width: 0,
+                                style: BorderStyle.none,
+                              ),
+                            ),
+                            suffixIcon: InkWell(
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.calendar_month_rounded,
+                                  color: Color.fromARGB(255, 240, 240, 240),
+                                  size: 22,
+                                ),
+                                onPressed: () {
+                                  _getDateFromUser();
+                                },
+                              ),
+                            ),
+                            filled: true,
+                            hintStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 13.5,
+                            ),
+                            hintText:
+                                DateFormat.yMMMMEEEEd().format(_selectedDate),
+                            //fillColor: Colors.white60,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        TextField(
                           controller: _textController,
                           focusNode: _focusInput,
                           style: const TextStyle(
@@ -256,47 +297,6 @@ class _AddNoteViewState extends State<AddNoteView> {
                               fontSize: 13.5,
                             ),
                             hintText: 'Description',
-                            //fillColor: Colors.white60,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        TextField(
-                          readOnly: true,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 13.5,
-                          ),
-                          decoration: InputDecoration(
-                            isDense: true,
-                            contentPadding:
-                                const EdgeInsets.fromLTRB(15, 15, 15, 15),
-                            fillColor: const Color.fromARGB(94, 29, 8, 63),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                              borderSide: const BorderSide(
-                                width: 0,
-                                style: BorderStyle.none,
-                              ),
-                            ),
-                            suffixIcon: InkWell(
-                              child: IconButton(
-                                icon: const Icon(
-                                  Icons.calendar_month_rounded,
-                                  color: Color.fromARGB(255, 240, 240, 240),
-                                  size: 22,
-                                ),
-                                onPressed: () {
-                                  _getDateFromUser();
-                                },
-                              ),
-                            ),
-                            filled: true,
-                            hintStyle: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 13.5,
-                            ),
-                            hintText:
-                                DateFormat.yMMMMEEEEd().format(_selectedDate),
                             //fillColor: Colors.white60,
                           ),
                         ),
