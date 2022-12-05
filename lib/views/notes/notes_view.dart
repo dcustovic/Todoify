@@ -26,23 +26,84 @@ class _NotesViewState extends State<NotesView>
   String get userId => AuthService.firebase().currentUser!.id;
   late final CloudStorageFirebase _notesService;
 
+  Icon actionIcon = const Icon(Icons.search);
+  Widget appBarTitle = const Text('Home');
+
+  TextEditingController _controller = TextEditingController();
+  String searchResult = '';
+  bool isSearchActive = false;
+
   @override
   void initState() {
     super.initState();
     _notesService = CloudStorageFirebase();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 95, 81, 223),
         appBar: AppBar(
-          title: const Text('Home'),
+          title: appBarTitle,
           titleSpacing: 20.5,
           backgroundColor: const Color.fromARGB(255, 95, 81, 223),
           elevation: 0,
-
+          actions: [
+            IconButton(
+              icon: actionIcon,
+              onPressed: () {
+                setState(() {
+                  if (actionIcon.icon == Icons.search) {
+                    actionIcon = const Icon(Icons.close);
+                    appBarTitle = TextField(
+                      controller: _controller,
+                      autofocus: true,
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                      cursorColor: Colors.deepOrange,
+                      decoration: const InputDecoration(
+                          // prefixIcon: Icon(Icons.search, color: Colors.white),
+                          contentPadding: EdgeInsets.only(left: 8),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.deepOrange),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.deepOrange),
+                          ),
+                          hintText: "Search all tasks...",
+                          hintStyle: TextStyle(
+                            color: Colors.white54,
+                          )),
+                      onChanged: (value) {
+                        setState(() {
+                          searchResult = value;
+                        });
+                      },
+                    );
+                    isSearchActive = true;
+                  } else {
+                    setState(() {
+                      actionIcon = const Icon(Icons.search);
+                      appBarTitle = const Text('Home');
+                      _controller.text = '';
+                      searchResult = '';
+                      isSearchActive = false;
+                    });
+                  }
+                });
+              },
+            ),
+          ],
           /*  actions: [
           PopupMenuButton<MenuAction>(
             onSelected: (value) async {
@@ -96,8 +157,11 @@ class _NotesViewState extends State<NotesView>
                   if (allNotes!.isEmpty) {
                     return const ListNoteEmpty();
                   }
+
                   return ListNoteView(
                     notes: allNotes,
+                    searchResult: searchResult,
+                    isSearchActive: isSearchActive,
                     deleteNote: (CloudNote note) async {
                       await _notesService.deleteNote(
                           documentId: note.documentId);

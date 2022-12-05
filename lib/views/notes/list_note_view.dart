@@ -14,12 +14,16 @@ enum Actions { edit, share, delete }
 
 class ListNoteView extends StatefulWidget {
   final Iterable<CloudNote> notes;
+  final String searchResult;
+  final bool isSearchActive;
   final NoteCallback deleteNote;
   final NoteCallback onEdit;
 
   const ListNoteView({
     super.key,
     required this.notes,
+    required this.searchResult,
+    required this.isSearchActive,
     required this.deleteNote,
     required this.onEdit,
   });
@@ -43,60 +47,71 @@ class _ListNoteViewState extends State<ListNoteView> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        DatePicker(
-          DateTime.now(),
-          width: 68,
-          initialSelectedDate: DateTime.now(),
-          selectionColor: const Color.fromARGB(255, 33, 0, 90),
-          selectedTextColor: Colors.white,
-          dateTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
-          dayTextStyle: const TextStyle(color: Colors.white, fontSize: 10),
-          monthTextStyle: const TextStyle(color: Colors.white, fontSize: 10),
-          onDateChange: (date) {
-            setState(() {
-              _selectedDate = date;
-            });
-          },
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 80, right: 15, left: 15),
-              child: TextButton.icon(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                      //side: BorderSide(color: Colors.deepOrange),
-                    ),
-                  ),
-                  backgroundColor: MaterialStateProperty.all(
-                    isShowAll
-                        ? const Color.fromARGB(255, 33, 0, 90)
-                        : Colors.transparent,
-                  ),
-                ),
-                onPressed: () {
+        widget.isSearchActive == false
+            ? DatePicker(
+                DateTime.now(),
+                width: 68,
+                initialSelectedDate: DateTime.now(),
+                selectionColor: const Color.fromARGB(255, 33, 0, 90),
+                selectedTextColor: Colors.white,
+                dateTextStyle:
+                    const TextStyle(color: Colors.white, fontSize: 20),
+                dayTextStyle:
+                    const TextStyle(color: Colors.white, fontSize: 10),
+                monthTextStyle:
+                    const TextStyle(color: Colors.white, fontSize: 10),
+                onDateChange: (date) {
                   setState(() {
-                    isShowAll = !isShowAll;
+                    _selectedDate = date;
                   });
                 },
-                icon: const Icon(Icons.align_horizontal_left_rounded,
-                    color: Colors.white),
-                label: const Text(
-                  "Show all",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
+              )
+            : Container(),
+        widget.isSearchActive == false
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 80, right: 15, left: 15),
+                    child: TextButton.icon(
+                      style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                            //side: BorderSide(color: Colors.deepOrange),
+                          ),
+                        ),
+                        backgroundColor: MaterialStateProperty.all(
+                          isShowAll
+                              ? const Color.fromARGB(255, 33, 0, 90)
+                              : Colors.transparent,
+                        ),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isShowAll = !isShowAll;
+                        });
+                      },
+                      icon: const Icon(Icons.align_horizontal_left_rounded,
+                          color: Colors.white),
+                      label: const Text(
+                        "Show all",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ],
-        ),
+                ],
+              )
+            : Container(),
         Padding(
-          padding: const EdgeInsets.only(top: 135),
+          padding: widget.isSearchActive == false
+              ? const EdgeInsets.only(top: 135)
+              : const EdgeInsets.only(top: 10),
           child: AnimationLimiter(
             child: ListView.builder(
               padding: const EdgeInsets.only(left: 15, right: 15),
@@ -104,12 +119,13 @@ class _ListNoteViewState extends State<ListNoteView> {
               itemBuilder: (context, index) {
                 final note = widget.notes.elementAt(index);
 
-                String formattedDate =
+                String formattedDateNote =
                     DateFormat('dd-MM-yyyy').format(note.date!.toDate());
                 String formattedDateSelected =
                     DateFormat('dd-MM-yyyy').format(_selectedDate);
 
-                if (formattedDate == formattedDateSelected) {
+                if (formattedDateNote == formattedDateSelected &&
+                    widget.isSearchActive == false) {
                   return AnimationConfiguration.staggeredList(
                     position: index,
                     duration: const Duration(milliseconds: 375),
@@ -199,7 +215,7 @@ class _ListNoteViewState extends State<ListNoteView> {
                                                 ),
                                               ),
                                               TextSpan(
-                                                text: formattedDate,
+                                                text: formattedDateNote,
                                                 style: note.completed == false
                                                     ? const TextStyle(
                                                         fontSize: 12.5)
@@ -329,7 +345,7 @@ class _ListNoteViewState extends State<ListNoteView> {
                                                 ),
                                               ),
                                               TextSpan(
-                                                text: formattedDate,
+                                                text: formattedDateNote,
                                                 style: note.completed == false
                                                     ? const TextStyle(
                                                         fontSize: 12.5)
@@ -369,6 +385,123 @@ class _ListNoteViewState extends State<ListNoteView> {
                       ),
                     ),
                   );
+                } else if (widget.isSearchActive == true) {
+                  if (note.text.contains(widget.searchResult) ||
+                      note.description!.contains(widget.searchResult)) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 15),
+                      child: PhysicalShape(
+                        color: note.completed == false
+                            ? const Color.fromARGB(94, 29, 8, 63)
+                            : const Color.fromARGB(152, 39, 39, 39),
+                        elevation: 10,
+                        shadowColor: const Color.fromARGB(108, 27, 0, 71),
+                        clipper: ShapeBorderClipper(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20.0),
+                          child: SlidableAutoCloseBehavior(
+                            child: Slidable(
+                              key: ValueKey(note.documentId),
+                              startActionPane: startActionPane(note, widget),
+                              endActionPane:
+                                  endActionPane(context, note, widget),
+                              child: ListTile(
+                                visualDensity:
+                                    const VisualDensity(vertical: 0.15),
+                                contentPadding: const EdgeInsets.only(
+                                    left: 15, right: 15, top: 13, bottom: 10),
+                                title: Text(
+                                  note.text,
+                                  style: note.completed == false
+                                      ? const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                        )
+                                      : const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                        ),
+                                  //maxLines: 1,
+                                  //softWrap: true,
+                                  //overflow: TextOverflow.ellipsis,
+                                ),
+
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 4.5),
+                                      child: Text(
+                                        note.description!,
+                                        style: note.completed == false
+                                            ? const TextStyle(fontSize: 12.5)
+                                            : const TextStyle(
+                                                fontSize: 12.5,
+                                                decoration:
+                                                    TextDecoration.lineThrough,
+                                              ),
+                                      ),
+                                    ),
+                                    RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          const WidgetSpan(
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 11, right: 4),
+                                              child: Icon(
+                                                Icons.calendar_month_rounded,
+                                                color: Colors.deepOrange,
+                                                size: 19,
+                                              ),
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: formattedDateNote,
+                                            style: note.completed == false
+                                                ? const TextStyle(
+                                                    fontSize: 12.5)
+                                                : const TextStyle(
+                                                    fontSize: 12.5,
+                                                    color: Colors.white38,
+                                                  ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                textColor: note.completed == false
+                                    ? Colors.white
+                                    : Colors.white38,
+                                //tileColor: const Color.fromARGB(255, 234, 211, 255),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                dense: true,
+                                onTap: () async {
+                                  await _notesService.updateNote(
+                                    documentId: note.documentId,
+                                    text: note.text,
+                                    description: note.description,
+                                    date: note.date,
+                                    completed: !note.completed!,
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                  return Container();
                 } else {
                   return Container();
                 }
