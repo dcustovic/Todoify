@@ -248,6 +248,7 @@ class _AddNoteViewState extends State<AddNoteView> {
                             color: Colors.white,
                             fontSize: 13.5,
                           ),
+                          cursorColor: Colors.deepOrange,
                           decoration: InputDecoration(
                             isDense: true,
                             contentPadding:
@@ -266,6 +267,7 @@ class _AddNoteViewState extends State<AddNoteView> {
                               fontSize: 13.5,
                             ),
                             hintText: 'Title',
+
                             //fillColor: Colors.white60,
                           ),
                         ),
@@ -279,6 +281,7 @@ class _AddNoteViewState extends State<AddNoteView> {
                             color: Colors.white,
                             fontSize: 13.5,
                           ),
+                          cursorColor: Colors.deepOrange,
                           decoration: InputDecoration(
                             isDense: true,
                             contentPadding:

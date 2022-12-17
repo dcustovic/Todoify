@@ -51,60 +51,60 @@ class _NotesViewState extends State<NotesView>
     super.build(context);
 
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 95, 81, 223),
+      appBar: AppBar(
+        title: appBarTitle,
+        titleSpacing: 20.5,
         backgroundColor: const Color.fromARGB(255, 95, 81, 223),
-        appBar: AppBar(
-          title: appBarTitle,
-          titleSpacing: 20.5,
-          backgroundColor: const Color.fromARGB(255, 95, 81, 223),
-          elevation: 0,
-          actions: [
-            IconButton(
-              icon: actionIcon,
-              onPressed: () {
-                setState(() {
-                  if (actionIcon.icon == Icons.search) {
-                    actionIcon = const Icon(Icons.close);
-                    appBarTitle = TextField(
-                      controller: _controller,
-                      autofocus: true,
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
-                      cursorColor: Colors.deepOrange,
-                      decoration: const InputDecoration(
-                          // prefixIcon: Icon(Icons.search, color: Colors.white),
-                          contentPadding: EdgeInsets.only(left: 8),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.deepOrange),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.deepOrange),
-                          ),
-                          hintText: "Search all tasks...",
-                          hintStyle: TextStyle(
-                            color: Colors.white54,
-                          )),
-                      onChanged: (value) {
-                        setState(() {
-                          searchResult = value;
-                        });
-                      },
-                    );
-                    isSearchActive = true;
-                  } else {
-                    setState(() {
-                      actionIcon = const Icon(Icons.search);
-                      appBarTitle = const Text('Home');
-                      _controller.text = '';
-                      searchResult = '';
-                      isSearchActive = false;
-                    });
-                  }
-                });
-              },
-            ),
-          ],
-          /*  actions: [
+        elevation: 0,
+        /*  actions: [
+          IconButton(
+            icon: actionIcon,
+            onPressed: () {
+              setState(() {
+                if (actionIcon.icon == Icons.search) {
+                  actionIcon = const Icon(Icons.close);
+                  appBarTitle = TextField(
+                    controller: _controller,
+                    autofocus: true,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                    cursorColor: Colors.deepOrange,
+                    decoration: const InputDecoration(
+                        // prefixIcon: Icon(Icons.search, color: Colors.white),
+                        contentPadding: EdgeInsets.only(left: 8),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.deepOrange),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.deepOrange),
+                        ),
+                        hintText: "Search all tasks...",
+                        hintStyle: TextStyle(
+                          color: Colors.white54,
+                        )),
+                    onChanged: (value) {
+                      setState(() {
+                        searchResult = value;
+                      });
+                    },
+                  );
+                  isSearchActive = true;
+                } else {
+                  setState(() {
+                    actionIcon = const Icon(Icons.search);
+                    appBarTitle = const Text('Home');
+                    _controller.text = '';
+                    searchResult = '';
+                    isSearchActive = false;
+                  });
+                }
+              });
+            },
+          ),
+        ], */
+        /*  actions: [
           PopupMenuButton<MenuAction>(
             onSelected: (value) async {
               switch (value) {
@@ -144,40 +144,40 @@ class _NotesViewState extends State<NotesView>
             },
           )
         ], */
-        ),
-        body: StreamBuilder(
-          stream: _notesService.allNotes(ownerUserId: userId),
-          builder: ((context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-              case ConnectionState.active:
-                if (snapshot.hasData) {
-                  final allNotes = snapshot.data;
+      ),
+      body: StreamBuilder(
+        stream: _notesService.allNotes(ownerUserId: userId),
+        builder: ((context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+            case ConnectionState.active:
+              if (snapshot.hasData) {
+                final allNotes = snapshot.data;
 
-                  if (allNotes!.isEmpty) {
-                    return const ListNoteEmpty();
-                  }
-
-                  return ListNoteView(
-                    notes: allNotes,
-                    searchResult: searchResult,
-                    isSearchActive: isSearchActive,
-                    deleteNote: (CloudNote note) async {
-                      await _notesService.deleteNote(
-                          documentId: note.documentId);
-                    },
-                    onEdit: (CloudNote note) {
-                      Navigator.of(context)
-                          .pushNamed(createOrUpdateNoteRoute, arguments: note);
-                    },
-                  );
-                } else {
-                  return const CustomLoadingIndicator();
+                if (allNotes!.isEmpty) {
+                  return const ListNoteEmpty();
                 }
-              default:
+
+                return ListNoteView(
+                  notes: allNotes,
+                  searchResult: searchResult,
+                  isSearchActive: isSearchActive,
+                  deleteNote: (CloudNote note) async {
+                    await _notesService.deleteNote(documentId: note.documentId);
+                  },
+                  onEdit: (CloudNote note) {
+                    Navigator.of(context)
+                        .pushNamed(createOrUpdateNoteRoute, arguments: note);
+                  },
+                );
+              } else {
                 return const CustomLoadingIndicator();
-            }
-          }),
-        ));
+              }
+            default:
+              return const CustomLoadingIndicator();
+          }
+        }),
+      ),
+    );
   }
 }

@@ -10,7 +10,9 @@ class CloudStorageFirebase {
   CloudStorageFirebase._sharedInstance();
   factory CloudStorageFirebase() => _shared;
 
-  final notes = FirebaseFirestore.instance.collection('notes').orderBy('date');
+  final notes = FirebaseFirestore.instance
+      .collection('notes')
+      .orderBy('date', descending: true);
 
   Future<void> deleteNote({required documentId}) async {
     try {

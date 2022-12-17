@@ -1,5 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_flutter/views/notes/search_view.dart';
 
 import 'notes/create_update_note_view.dart';
 import 'notes/notes_view.dart';
@@ -16,6 +17,7 @@ class _HomepageViewState extends State<HomepageView> {
   final pages = [
     const NotesView(),
     const AddNoteView(),
+    const SearchView(),
     const ProfileView(),
   ];
   final PageController _pageController = PageController(initialPage: 0);
@@ -43,6 +45,7 @@ class _HomepageViewState extends State<HomepageView> {
         items: const <Widget>[
           Icon(Icons.home, size: 30),
           Icon(Icons.add, size: 30),
+          Icon(Icons.search, size: 30),
           Icon(Icons.person, size: 30),
         ],
         onTap: (selectedIndex) {
